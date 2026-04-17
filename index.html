@@ -230,13 +230,40 @@ input[type=range]{width:100%;accent-color:var(--cyan);cursor:pointer}
 .token-wrap{margin:32px auto 0;display:flex;justify-content:center}
 .token-actions{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-top:16px}
 
+/* LITERATUR */
+.lit-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:14px;margin-bottom:28px}
+.lit-card{background:var(--surface);border:1px solid var(--border);border-radius:6px;padding:20px;position:relative;transition:border-color .2s}
+.lit-card:hover{border-color:var(--border2)}
+.lit-card::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;border-radius:6px 0 0 6px;background:var(--cyan)}
+.lit-card.orange::before{background:var(--orange)}
+.lit-card.blue::before{background:var(--blue)}
+.lit-card.green::before{background:var(--green)}
+.lit-meta{display:flex;align-items:center;gap:8px;margin-bottom:8px}
+.lit-year{font-family:var(--mono);font-size:.62rem;color:var(--muted);letter-spacing:.05em}
+.lit-badge{font-family:var(--mono);font-size:.55rem;letter-spacing:.1em;text-transform:uppercase;padding:2px 7px;border-radius:2px;border:1px solid var(--border2);color:var(--muted)}
+.lit-badge.e{color:var(--green);border-color:rgba(58,175,114,.3)}
+.lit-badge.m{color:var(--cyan);border-color:rgba(15,184,204,.3)}
+.lit-badge.a{color:var(--orange);border-color:rgba(232,115,42,.3)}
+.lit-title{font-family:var(--serif);font-size:.97rem;color:var(--text);margin-bottom:4px;line-height:1.4}
+.lit-author{font-family:var(--mono);font-size:.65rem;color:var(--muted);margin-bottom:4px}
+.lit-pub{font-family:var(--mono);font-size:.6rem;color:#2a4050;margin-bottom:10px}
+.lit-body{font-size:.8rem;color:#5a7888;line-height:1.6;margin-bottom:12px;border-top:1px solid var(--border);padding-top:10px}
+.lit-link{font-family:var(--mono);font-size:.6rem;letter-spacing:.08em;color:var(--cyan);text-decoration:none;transition:opacity .15s}
+.lit-link:hover{opacity:.7}
+.lit-link-type{font-family:var(--mono);font-size:.57rem;color:var(--muted);margin-left:6px}
+.lit-cluster-hd{font-family:var(--mono);font-size:.63rem;letter-spacing:.18em;text-transform:uppercase;color:var(--cyan);margin-bottom:14px;padding-bottom:10px;border-bottom:1px solid var(--border)}
+.lit-cluster-hd.orange{color:var(--orange)}
+.lit-cluster-hd.blue{color:var(--blue)}
+.lit-cluster-hd.green{color:var(--green)}
+.lit-cluster-hd.muted{color:var(--muted)}
+
 footer{background:var(--bg);border-top:1px solid var(--border);padding:22px 40px;text-align:center;font-family:var(--mono);font-size:.58rem;color:rgba(216,232,238,.18);letter-spacing:.12em}
 </style>
 </head>
 <body>
 
 <nav>
-  <span class="nav-logo">Netzwerkök. · S1</span>
+  <span class="nav-logo">Netzwerkökonomie</span>
   <div class="nav-links">
     <a class="nav-a" href="#hero">Intro</a>
     <a class="nav-a" href="#koenig">01 Königsberg</a>
@@ -245,7 +272,8 @@ footer{background:var(--bg);border-top:1px solid var(--border);padding:22px 40px
     <a class="nav-a" href="#crowds">04 Crowds</a>
     <a class="nav-a" href="#transfer">05 Transfer</a>
     <a class="nav-a" href="#workshop">06 Workshop</a>
-    <a class="nav-a" href="#ausblick">07 Ausblick</a>
+    <a class="nav-a" href="#ausblick">07 Wertwachstum</a>
+    <a class="nav-a" href="#literatur">◎ Literatur</a>
     <a class="nav-a" href="#quiz">Quiz</a>
   </div>
 </nav>
@@ -253,7 +281,7 @@ footer{background:var(--bg);border-top:1px solid var(--border);padding:22px 40px
 <!-- HERO -->
 <section id="hero">
   <div class="hero-left">
-    <div class="hero-eyebrow">Media University · Session 1</div>
+    <div class="hero-eyebrow">Prof. Thomas Petzold Ph.D.</div>
     <h1 class="hero-h1">Netzwerk<br><em>ökonomie</em></h1>
     <p class="hero-lf">Wie formen Verbindungen Sichtbarkeit, Diffusion, Wert und Verwundbarkeit in realen Systemen?</p>
     <div class="hero-stats">
@@ -454,24 +482,255 @@ footer{background:var(--bg);border-top:1px solid var(--border);padding:22px 40px
   </div>
 </section>
 
-<!-- 07 AUSBLICK -->
+<!-- 07 WERTWACHSTUM -->
 <section id="ausblick" class="ch ch-b">
   <div class="ch-ghost">07</div>
   <div class="ch-inner">
     <div class="ch-hd">
       <div class="ch-num">07</div>
       <div>
-        <div class="ch-title">Session 2: Wann wird Wachstum zu Wert?</div>
-        <div class="ch-sub">Session 1 zeigt, wie Struktur Verhalten formt. Session 2 erklärt, wie Struktur ökonomischen Wert, Macht und Verwundbarkeit hervorbringt.</div>
+        <div class="ch-title">Wann wird Wachstum zu Wert?</div>
+        <div class="ch-sub">Struktur formt Verhalten — aber wie entstehen daraus ökonomischer Wert, Marktmacht und Verwundbarkeit? Vier Konzepte, die die Netzwerklogik in Wertdynamik übersetzen.</div>
       </div>
     </div>
     <div class="ab-grid">
-      <div class="ab-card"><div class="ab-tag">01 · Nächste Session</div><div class="ab-title">Netzwerkeffekte</div><div class="ab-body">Wert steigt nicht linear. Wie entsteht zusätzlicher Nutzen — und warum bringt nicht jedes Wachstum ökonomische Qualität?</div></div>
-      <div class="ab-card"><div class="ab-tag">02 · Nächste Session</div><div class="ab-title">Plattformökonomie</div><div class="ab-body">Warum manche Märkte extrem skalieren. Plattformen koppeln Gruppen, senken Suchkosten und verstärken Interaktionen — Marktmacht entsteht.</div></div>
-      <div class="ab-card"><div class="ab-tag">03 · Nächste Session</div><div class="ab-title">Kaltstart & kritische Masse</div><div class="ab-body">Warum gute Ideen oft scheitern, solange zu wenige Knoten aktiv sind — und welche Strategien helfen, das Momentum zu erzeugen.</div></div>
-      <div class="ab-card"><div class="ab-tag">04 · Nächste Session</div><div class="ab-title">Negative Netzwerkeffekte</div><div class="ab-body">Mehr Nutzer:innen können Reibung, Spam und Qualitätsverlust erzeugen. Wann kippt Wachstum — und wie schützt man sich?</div></div>
+      <div class="ab-card"><div class="ab-tag">Konzept 01</div><div class="ab-title">Netzwerkeffekte</div><div class="ab-body">Wert steigt nicht linear mit der Nutzerzahl, sondern überproportional. Wie entsteht zusätzlicher Nutzen — und warum bringt nicht jedes Wachstum ökonomische Qualität?</div></div>
+      <div class="ab-card"><div class="ab-tag">Konzept 02</div><div class="ab-title">Plattformökonomie</div><div class="ab-body">Warum manche Märkte extrem skalieren. Plattformen koppeln Gruppen, senken Suchkosten und verstärken Interaktionen — Marktmacht entsteht aus Struktur, nicht aus Zufall.</div></div>
+      <div class="ab-card"><div class="ab-tag">Konzept 03</div><div class="ab-title">Kaltstart &amp; kritische Masse</div><div class="ab-body">Warum gute Ideen oft scheitern, solange zu wenige Knoten aktiv sind — und welche Strategien helfen, das Momentum zu erzeugen und die Schwelle zu überwinden.</div></div>
+      <div class="ab-card"><div class="ab-tag">Konzept 04</div><div class="ab-title">Negative Netzwerkeffekte</div><div class="ab-body">Mehr Nutzer:innen können Reibung, Spam und Qualitätsverlust erzeugen. Wann kippt Wachstum — und wie schützen Plattformen die Qualität ihrer Verbindungen?</div></div>
     </div>
     <div class="pull" style="margin-top:36px;"><p>Netzwerkökonomie beginnt mit einer einfachen Verschiebung des Blicks: weg vom isolierten Akteur, hin zur Struktur der Beziehungen, die Reichweite, Macht und Wert überhaupt erst entstehen lässt.</p></div>
+  </div>
+</section>
+
+<!-- LITERATUR -->
+<section id="literatur" class="ch ch-a">
+  <div class="ch-ghost">◎</div>
+  <div class="ch-inner">
+    <div class="ch-hd">
+      <div class="ch-num">◎</div>
+      <div>
+        <div class="ch-title">Weiterführende Literatur</div>
+        <div class="ch-sub">Wissenschaftliche Primärquellen und Standardwerke zu den Themen des Explorables — sortiert nach thematischen Clustern.</div>
+      </div>
+    </div>
+
+    <p style="font-size:.85rem;color:var(--muted);max-width:660px;margin-bottom:36px;line-height:1.7">Aufsätze verlinken auf DOI (permanent), Bücher auf WorldCat. Badges zeigen den Einstiegslevel: <span style="color:var(--green);font-family:var(--mono);font-size:.7rem">Einstieg</span> · <span style="color:var(--cyan);font-family:var(--mono);font-size:.7rem">Vertiefung</span> · <span style="color:var(--orange);font-family:var(--mono);font-size:.7rem">Klassiker</span></p>
+
+    <!-- CLUSTER 1 -->
+    <div style="margin-bottom:40px">
+      <div class="lit-cluster-hd">01 · Graphentheorie &amp; Netzwerkstruktur</div>
+      <div class="lit-grid">
+
+        <div class="lit-card orange">
+          <div class="lit-meta"><span class="lit-year">1736</span><span class="lit-badge a">Klassiker</span></div>
+          <div class="lit-title">Solutio problematis ad geometriam situs pertinentis</div>
+          <div class="lit-author">Euler, L.</div>
+          <div class="lit-pub">Commentarii Academiae Scientiarum Petropolitanae, 8, 128–140</div>
+          <div class="lit-body">Die Geburtsstunde der Graphentheorie: Euler beweist, dass das Königsberger Brückenproblem unlösbar ist — und begründet damit das Denken in Knoten, Kanten und Graden.</div>
+          <a class="lit-link" href="https://search.worldcat.org/search?q=Euler+Solutio+problematis+geometriam+situs" target="_blank" rel="noopener">→ WorldCat</a><span class="lit-link-type">Katalog</span>
+        </div>
+
+        <div class="lit-card">
+          <div class="lit-meta"><span class="lit-year">1999</span><span class="lit-badge a">Klassiker</span></div>
+          <div class="lit-title">Emergence of Scaling in Random Networks</div>
+          <div class="lit-author">Barabási, A.-L. &amp; Albert, R.</div>
+          <div class="lit-pub">Science, 286(5439), 509–512</div>
+          <div class="lit-body">Einführung des Scale-Free-Netzwerks: Nicht alle Knoten sind gleich — wenige Hubs konzentrieren einen Großteil der Verbindungen. Grundlage für das Verständnis von Power-Law-Verteilungen in sozialen und technischen Netzen.</div>
+          <a class="lit-link" href="https://doi.org/10.1126/science.286.5439.509" target="_blank" rel="noopener">→ DOI 10.1126/science.286.5439.509</a><span class="lit-link-type">Permanent</span>
+        </div>
+
+        <div class="lit-card">
+          <div class="lit-meta"><span class="lit-year">2012</span><span class="lit-badge m">Vertiefung</span></div>
+          <div class="lit-title">Four Degrees of Separation</div>
+          <div class="lit-author">Backstrom, L., Boldi, P., Rosa, M., Ugander, J. &amp; Vigna, S.</div>
+          <div class="lit-pub">ACM Web Science Conference</div>
+          <div class="lit-body">Empirische Analyse von 721 Millionen Facebook-Nutzern: Die mittlere Distanz beträgt 4,74 Schritte. Aktualisierung der klassischen Six-Degrees-Hypothese mit realen Netzwerkdaten.</div>
+          <a class="lit-link" href="https://doi.org/10.1145/2380718.2380723" target="_blank" rel="noopener">→ DOI 10.1145/2380718.2380723</a><span class="lit-link-type">Permanent</span>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- CLUSTER 2 -->
+    <div style="margin-bottom:40px">
+      <div class="lit-cluster-hd orange">02 · Small-World &amp; Diffusion</div>
+      <div class="lit-grid">
+
+        <div class="lit-card orange">
+          <div class="lit-meta"><span class="lit-year">1998</span><span class="lit-badge a">Klassiker</span></div>
+          <div class="lit-title">Collective Dynamics of 'Small-World' Networks</div>
+          <div class="lit-author">Watts, D. J. &amp; Strogatz, S. H.</div>
+          <div class="lit-pub">Nature, 393, 440–442</div>
+          <div class="lit-body">Das Standardwerk zum Small-World-Phänomen: Wie ein Netzwerk durch wenige zufällige Umverdrahtungen von einer regulären Lattice zu einem Small-World-Graphen wird — mit dramatisch kürzeren Pfaden bei erhaltenem Clustering.</div>
+          <a class="lit-link" href="https://doi.org/10.1038/30918" target="_blank" rel="noopener">→ DOI 10.1038/30918</a><span class="lit-link-type">Permanent</span>
+        </div>
+
+        <div class="lit-card orange">
+          <div class="lit-meta"><span class="lit-year">1973</span><span class="lit-badge a">Klassiker</span></div>
+          <div class="lit-title">The Strength of Weak Ties</div>
+          <div class="lit-author">Granovetter, M. S.</div>
+          <div class="lit-pub">American Journal of Sociology, 78(6), 1360–1380</div>
+          <div class="lit-body">Kontraintuitiv: Schwache Verbindungen — flüchtige Bekannte — sind strategisch wertvoller als enge Beziehungen, weil sie Brücken zu anderen Clustern bilden und nicht-redundante Informationen liefern.</div>
+          <a class="lit-link" href="https://doi.org/10.1086/225469" target="_blank" rel="noopener">→ DOI 10.1086/225469</a><span class="lit-link-type">Permanent</span>
+        </div>
+
+        <div class="lit-card">
+          <div class="lit-meta"><span class="lit-year">2003</span><span class="lit-badge e">Einstieg</span></div>
+          <div class="lit-title">Diffusion of Innovations (5. Aufl.)</div>
+          <div class="lit-author">Rogers, E. M.</div>
+          <div class="lit-pub">Free Press, New York</div>
+          <div class="lit-body">Das Standardwerk zur Ausbreitung von Ideen, Technologien und Verhaltensweisen in sozialen Netzwerken. Zeigt, wie Netzwerkstruktur die Adoptionskurve formt — von Early Adopters bis zur kritischen Masse.</div>
+          <a class="lit-link" href="https://search.worldcat.org/search?q=Rogers+Diffusion+of+Innovations+5th+Free+Press+2003" target="_blank" rel="noopener">→ WorldCat</a><span class="lit-link-type">Katalog</span>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- CLUSTER 3 -->
+    <div style="margin-bottom:40px">
+      <div class="lit-cluster-hd blue">03 · Segregation &amp; kollektive Dynamik</div>
+      <div class="lit-grid">
+
+        <div class="lit-card blue">
+          <div class="lit-meta"><span class="lit-year">1971</span><span class="lit-badge a">Klassiker</span></div>
+          <div class="lit-title">Dynamic Models of Segregation</div>
+          <div class="lit-author">Schelling, T. C.</div>
+          <div class="lit-pub">Journal of Mathematical Sociology, 1(2), 143–186</div>
+          <div class="lit-body">Das Originalmodell der Segregationsdynamik: Schelling zeigt, wie aus moderaten individuellen Präferenzen vollständige kollektive Trennung entsteht — ein Musterbeispiel für emergentes Verhalten in sozialen Systemen.</div>
+          <a class="lit-link" href="https://doi.org/10.1080/0022250X.1971.9989794" target="_blank" rel="noopener">→ DOI 10.1080/0022250X.1971.9989794</a><span class="lit-link-type">Permanent</span>
+        </div>
+
+        <div class="lit-card blue">
+          <div class="lit-meta"><span class="lit-year">1978</span><span class="lit-badge a">Klassiker</span></div>
+          <div class="lit-title">Micromotives and Macrobehavior</div>
+          <div class="lit-author">Schelling, T. C.</div>
+          <div class="lit-pub">W. W. Norton</div>
+          <div class="lit-body">Die zugänglichere Buchversion des Segregationsmodells, erweitert um weitere Beispiele kollektiver Dynamik. Zeigt systemisch, wie Mikropräferenzen Makromuster erzeugen — fundamental für Netzwerkökonomie und Spieltheorie.</div>
+          <a class="lit-link" href="https://search.worldcat.org/search?q=Schelling+Micromotives+Macrobehavior+Norton+1978" target="_blank" rel="noopener">→ WorldCat</a><span class="lit-link-type">Katalog</span>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- CLUSTER 4 -->
+    <div style="margin-bottom:40px">
+      <div class="lit-cluster-hd green">04 · Strukturelles Kapital &amp; Brückenrollen</div>
+      <div class="lit-grid">
+
+        <div class="lit-card green">
+          <div class="lit-meta"><span class="lit-year">1992</span><span class="lit-badge a">Klassiker</span></div>
+          <div class="lit-title">Structural Holes: The Social Structure of Competition</div>
+          <div class="lit-author">Burt, R. S.</div>
+          <div class="lit-pub">Harvard University Press</div>
+          <div class="lit-body">Burt zeigt, dass strategischer Vorteil aus der Position zwischen unverbundenen Clustern entsteht — nicht aus der Anzahl der Verbindungen. Brückenknoten über „Structural Holes" kontrollieren Informationsfluss und Koordination.</div>
+          <a class="lit-link" href="https://search.worldcat.org/search?q=Burt+Structural+Holes+Social+Structure+Competition+Harvard+1992" target="_blank" rel="noopener">→ WorldCat</a><span class="lit-link-type">Katalog</span>
+        </div>
+
+        <div class="lit-card green">
+          <div class="lit-meta"><span class="lit-year">2004</span><span class="lit-badge m">Vertiefung</span></div>
+          <div class="lit-title">Structural Holes and Good Ideas</div>
+          <div class="lit-author">Burt, R. S.</div>
+          <div class="lit-pub">American Journal of Sociology, 110(2), 349–399</div>
+          <div class="lit-body">Empirische Weiterentwicklung: Manager, die Brücken zwischen getrennten Gruppen schlagen, produzieren mehr und bessere Ideen. Direkt anwendbar auf Innovations- und Wissensmanagement.</div>
+          <a class="lit-link" href="https://doi.org/10.1086/421787" target="_blank" rel="noopener">→ DOI 10.1086/421787</a><span class="lit-link-type">Permanent</span>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- CLUSTER 5 -->
+    <div style="margin-bottom:40px">
+      <div class="lit-cluster-hd muted">05 · Plattformökonomie &amp; Netzwerkeffekte</div>
+      <div class="lit-grid">
+
+        <div class="lit-card">
+          <div class="lit-meta"><span class="lit-year">1985</span><span class="lit-badge a">Klassiker</span></div>
+          <div class="lit-title">Network Externalities, Competition, and Compatibility</div>
+          <div class="lit-author">Katz, M. L. &amp; Shapiro, C.</div>
+          <div class="lit-pub">American Economic Review, 75(3), 424–440</div>
+          <div class="lit-body">Das ökonomische Fundament der Netzwerkeffekte: Wenn der Wert eines Gutes vom Umfang seiner Nutzung abhängt, verändern sich Wettbewerb, Kompatibilitätsstrategien und Marktmacht grundlegend.</div>
+          <a class="lit-link" href="https://www.jstor.org/stable/1814809" target="_blank" rel="noopener">→ JSTOR Stable URL</a><span class="lit-link-type">Permanent</span>
+        </div>
+
+        <div class="lit-card">
+          <div class="lit-meta"><span class="lit-year">2003</span><span class="lit-badge m">Vertiefung</span></div>
+          <div class="lit-title">Platform Competition in Two-Sided Markets</div>
+          <div class="lit-author">Rochet, J.-C. &amp; Tirole, J.</div>
+          <div class="lit-pub">Journal of the European Economic Association, 1(4), 990–1029</div>
+          <div class="lit-body">Grundlegendes Modell zweiseitiger Märkte: Plattformen müssen beide Nutzergruppen koordinieren — die Preisstruktur hängt von der Preiselastizität beider Seiten ab. Nobelpreis-nahe Arbeit.</div>
+          <a class="lit-link" href="https://doi.org/10.1162/154247603322493212" target="_blank" rel="noopener">→ DOI 10.1162/154247603322493212</a><span class="lit-link-type">Permanent</span>
+        </div>
+
+        <div class="lit-card">
+          <div class="lit-meta"><span class="lit-year">2016</span><span class="lit-badge e">Einstieg</span></div>
+          <div class="lit-title">Platform Revolution</div>
+          <div class="lit-author">Parker, G., Van Alstyne, M. &amp; Choudary, S. P.</div>
+          <div class="lit-pub">W. W. Norton</div>
+          <div class="lit-body">Zugängliches Standardwerk zur Plattformlogik: Wie Plattformen Wert nicht produzieren, sondern vermitteln — und welche Mechanismen Netzwerkeffekte, Governance und Skalierung steuern.</div>
+          <a class="lit-link" href="https://search.worldcat.org/search?q=Parker+Van+Alstyne+Choudary+Platform+Revolution+Norton+2016" target="_blank" rel="noopener">→ WorldCat</a><span class="lit-link-type">Katalog</span>
+        </div>
+
+        <div class="lit-card">
+          <div class="lit-meta"><span class="lit-year">2019</span><span class="lit-badge e">Einstieg</span></div>
+          <div class="lit-title">The Age of Surveillance Capitalism</div>
+          <div class="lit-author">Zuboff, S.</div>
+          <div class="lit-pub">PublicAffairs</div>
+          <div class="lit-body">Zuboff zeigt, wie Plattformen Verhaltensdaten als Rohstoff nutzen, um Zukunft vorherzusagen und zu verkaufen — kritische Perspektive auf die Machtasymmetrien digitaler Märkte.</div>
+          <a class="lit-link" href="https://search.worldcat.org/title/age-of-surveillance-capitalism-the-fight-for-a-human-future-at-the-new-frontier-of-power/oclc/1121142538" target="_blank" rel="noopener">→ WorldCat</a><span class="lit-link-type">OCLC 1121142538</span>
+        </div>
+
+        <div class="lit-card">
+          <div class="lit-meta"><span class="lit-year">2017</span><span class="lit-badge m">Vertiefung</span></div>
+          <div class="lit-title">Platform Capitalism</div>
+          <div class="lit-author">Srnicek, N.</div>
+          <div class="lit-pub">Polity Press</div>
+          <div class="lit-body">Kompakte politökonomische Analyse: Welche Machtstrukturen entstehen, wenn wenige Plattformen digitale Infrastruktur kontrollieren? Srnicek unterscheidet fünf Plattformtypen und ihre Eigenlogiken.</div>
+          <a class="lit-link" href="https://search.worldcat.org/title/Platform-capitalism/oclc/973870650" target="_blank" rel="noopener">→ WorldCat</a><span class="lit-link-type">OCLC 973870650</span>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- CLUSTER 6 -->
+    <div style="margin-bottom:16px">
+      <div class="lit-cluster-hd orange">06 · Wertwachstum, Lock-in &amp; Kaltstart</div>
+      <div class="lit-grid">
+
+        <div class="lit-card orange">
+          <div class="lit-meta"><span class="lit-year">2000</span><span class="lit-badge a">Klassiker</span></div>
+          <div class="lit-title">Information Rules: A Strategic Guide to the Network Economy</div>
+          <div class="lit-author">Shapiro, C. &amp; Varian, H. R.</div>
+          <div class="lit-pub">Harvard Business School Press</div>
+          <div class="lit-body">Das strategische Standardwerk der Netzwerkökonomie: Lock-in, Switching Costs, Netzwerkeffekte und Informationsgüter. Shapiro und Varian liefern das analytische Instrumentarium für digitale Märkte.</div>
+          <a class="lit-link" href="https://search.worldcat.org/search?q=Shapiro+Varian+Information+Rules+Strategic+Guide+Network+Economy+Harvard" target="_blank" rel="noopener">→ WorldCat</a><span class="lit-link-type">Katalog</span>
+        </div>
+
+        <div class="lit-card orange">
+          <div class="lit-meta"><span class="lit-year">2021</span><span class="lit-badge e">Einstieg</span></div>
+          <div class="lit-title">The Cold Start Problem</div>
+          <div class="lit-author">Chen, A.</div>
+          <div class="lit-pub">Harper Business</div>
+          <div class="lit-body">Praxisnahes Buch über die Überwindung des Kaltstart-Problems: Wie erfolgreiche Plattformen die kritische Masse erreichen, atomare Netzwerke aufbauen und Netzwerkeffekte skalieren.</div>
+          <a class="lit-link" href="https://search.worldcat.org/search?q=Andrew+Chen+Cold+Start+Problem+Harper+Business+2021" target="_blank" rel="noopener">→ WorldCat</a><span class="lit-link-type">Katalog</span>
+        </div>
+
+        <div class="lit-card">
+          <div class="lit-meta"><span class="lit-year">2013</span><span class="lit-badge m">Vertiefung</span></div>
+          <div class="lit-title">Metcalfe's Law after 40 Years of Ethernet</div>
+          <div class="lit-author">Metcalfe, R.</div>
+          <div class="lit-pub">Computer, 46(12), 26–31</div>
+          <div class="lit-body">Der Erfinder des Ethernet reflektiert nach 40 Jahren über sein eigenes Gesetz: Unter welchen Bedingungen gilt n², wann weicht der empirische Wert ab, und was bedeutet das für Plattformstrategien?</div>
+          <a class="lit-link" href="https://doi.org/10.1109/MC.2013.374" target="_blank" rel="noopener">→ DOI 10.1109/MC.2013.374</a><span class="lit-link-type">Permanent</span>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="pull">
+      <p>Die Stärke der Netzwerkökonomie liegt in ihrer Übertragbarkeit: Dieselben Konzepte — Grad, Clustering, Brücken, Diffusion, Netzwerkeffekte — erklären Phänomene von der Epidemiologie bis zur Plattformstrategie.</p>
+    </div>
+
   </div>
 </section>
 
@@ -479,7 +738,7 @@ footer{background:var(--bg);border-top:1px solid var(--border);padding:22px 40px
 <section id="quiz">
   <div class="qwrap">
     <h2>Wissen testen</h2>
-    <div class="q-sub">15 Fragen · Session 1 &amp; 2 · Netzwerkökonomie</div>
+    <div class="q-sub">15 Fragen · Netzwerkökonomie</div>
 
     <!-- Name Gate -->
     <div id="qGate" class="q-gate">
@@ -509,11 +768,11 @@ footer{background:var(--bg);border-top:1px solid var(--border);padding:22px 40px
   </div>
 </section>
 
-<footer>An explorable designed by Prof. Thomas Petzold Ph.D. and Claude · Media University of Applied Sciences · 2026</footer>
+<footer>An explorable designed by Prof. Thomas Petzold Ph.D. and Claude · 2026</footer>
 
 <script>
 // ── NAV OBSERVER ──
-const secIds=['hero','koenig','metriken','smallworld','crowds','transfer','workshop','ausblick','quiz'];
+const secIds=['hero','koenig','metriken','smallworld','crowds','transfer','workshop','ausblick','literatur','quiz'];
 const navAs=document.querySelectorAll('.nav-a');
 secIds.forEach(id=>{
   const el=document.getElementById(id);if(!el)return;
@@ -626,13 +885,13 @@ const QS=[
   {s:'S1',q:'Welche Aussage zu Clustering und Management stimmt?',opts:['Hohes Clustering ist immer strategisch optimal','Clustering beeinflusst Entscheidungsqualität nicht','Hohes Clustering fördert Vertrauen, erhöht aber das Silo-Risiko','Clustering und Diffusion sind vollständig unabhängig'],c:2,fb:'Hohes Clustering stabilisiert Vertrauen und beschleunigt interne Koordination — riskiert aber Übersteuerung und Gruppendenken. Führung in dichten Netzwerken muss gezielte Brücken nach außen bauen.'},
   {s:'S1',q:'Was ist die „Klammerthese" der Netzwerkökonomie?',opts:['Sie erklärt ausschließlich Plattform-Feeds und Social Media','Sie ist nur für große Tech-Konzerne strategisch relevant','Sie ist eine Denkform für alle Systeme mit Verbindungen — von Lieferketten bis Organisationsnetzen','Netzwerke lassen sich ausschließlich digital analysieren'],c:2,fb:'Netzwerkökonomie ist keine Lehre über Plattform-Feeds, sondern eine Denkform für Systeme mit Verbindungen: Lieferketten, Gesundheit, Mobilität, Organisationen — überall helfen Knoten, Wege und Verdichtung.'},
   {s:'S1',q:'Welcher Knotentyp ist für die Verbindung getrennter Cluster strategisch entscheidend?',opts:['Der Knoten mit dem höchsten Grad im Netzwerk','Der Knoten mit dem höchsten Clustering-Koeffizienten','Der Brückenknoten — er verbindet sonst unverbundene Teilnetzwerke','Der isolierte Knoten am Rand des Netzwerks'],c:2,fb:'Brückenknoten verbinden Cluster, die sonst keinen Kontakt hätten. Sie ermöglichen den Fluss nicht-redundanter Informationen und sind oft strategisch wertvoller als reine Hubs im selben Cluster.'},
-  // SESSION 2 — 7 Fragen
+  // WERTWACHSTUM — 7 Fragen
   {s:'S2',q:'Was besagt Metcalfes Gesetz zu Netzwerkeffekten?',opts:['Der Wert wächst linear mit der Nutzerzahl','Der Wert wächst proportional zum Quadrat der Nutzerzahl (n²)','Netzwerkeffekte entstehen erst ab 1 Mio. Nutzer:innen','Der Wert ist unabhängig von der Netzwerkgröße'],c:1,fb:'Metcalfes Gesetz: Der Wert eines Netzwerks wächst proportional zu n² — der Anzahl möglicher Verbindungen. Das erklärt, warum Plattformen ab einer kritischen Masse exponentiell attraktiver werden.'},
   {s:'S2',q:'Was ist das „Kaltstart-Problem" in der Plattformökonomie?',opts:['Plattformen starten zu langsam wegen fehlender Serverkapazität','Eine neue Plattform schafft kaum Wert, weil zunächst zu wenige Nutzer:innen aktiv sind','Kaltstart beschreibt technische Ausfälle beim Launch','Der Begriff bezeichnet zu hohe Anfangsinvestitionen'],c:1,fb:'Das Kaltstart-Problem: Ein Netzwerk ohne Nutzer:innen bietet kaum Wert — aber ohne Wert kommen keine Nutzer:innen. Diese Henne-Ei-Dynamik ist die zentrale Herausforderung beim Aufbau von Plattformen.'},
   {s:'S2',q:'Was unterscheidet direkte von indirekten Netzwerkeffekten?',opts:['Direkte Effekte sind immer stärker als indirekte','Direkte Effekte entstehen innerhalb einer Nutzergruppe; indirekte zwischen zwei verschiedenen Gruppen','Indirekte Effekte entstehen nur bei B2B-Plattformen','Beide Begriffe sind Synonyme'],c:1,fb:'Direkte Netzwerkeffekte: Mehr Nutzer:innen derselben Gruppe steigern den Wert (z. B. Telefon). Indirekte: Mehr Nutzer:innen einer Gruppe machen die Plattform für eine andere Gruppe attraktiver (z. B. mehr Käufer → mehr Verkäufer).'},
   {s:'S2',q:'Wann kippen Netzwerkeffekte ins Negative?',opts:['Immer wenn eine Plattform profitabel wird','Wenn Wachstum Überlastung, Spam oder Qualitätsverlust erzeugt','Negative Netzwerkeffekte sind in der Literatur nicht dokumentiert','Wenn Nutzer:innen die Plattform zu häufig verwenden'],c:1,fb:'Negative Netzwerkeffekte entstehen, wenn mehr Nutzer:innen den Wert für bestehende Nutzer:innen mindern — durch Überfüllung, sinkende Qualität, Spam oder Vertrauensverlust. Skalierung ist kein Selbstzweck.'},
   {s:'S2',q:'Was ist „Lock-in" im Kontext der Plattformökonomie?',opts:['Eine technische Sicherheitssperre in Plattformsystemen','Die Situation, in der Wechselkosten Nutzer:innen an eine Plattform binden, obwohl Alternativen existieren','Lock-in beschreibt das Einfrieren von Preisen','Der Begriff meint ausschließlich vertragliche Bindungen'],c:1,fb:'Lock-in bezeichnet den Zustand, in dem Wechselkosten — Datenverlust, fehlende Kompatibilität, Verlust sozialer Verbindungen — so hoch sind, dass Nutzer:innen verbleiben, selbst wenn Konkurrenzangebote objektiv besser sind.'},
-  {s:'S2',q:'Was ist die strategische Kernfrage von Session 2?',opts:['Wie maximiert eine Plattform kurzfristige Werbeeinnahmen?','Wann erzeugt mehr Vernetzung echten Mehrwert — und wann nur größere Zahlen?','Welche Plattform hat die meisten Nutzer:innen?','Wie reduziert eine Plattform ihre Serverkosten?'],c:1,fb:'Die Leitfrage von Session 2: Wann schlägt Wachstum in echten ökonomischen Wert um — und wann endet es in Überlastung oder Lock-in? Quantität und Qualität des Wachstums sind strikt zu unterscheiden.'},
+  {s:'S2',q:'Wann erzeugt mehr Vernetzung echten Mehrwert — und wann nur größere Zahlen?',opts:['Immer wenn die Nutzerzahl steigt','Wenn Wachstum die Qualität der Interaktionen erhöht und neuen Nutzen schafft, nicht nur Quantität','Mehrwert entsteht ausschließlich durch mehr Werbeumsatz','Größere Zahlen und Mehrwert sind immer identisch'],c:1,fb:'Die Kernfrage der Wertdynamik: Wann schlägt Wachstum in echten ökonomischen Wert um — und wann endet es in Überlastung oder Lock-in? Quantität und Qualität des Wachstums sind strikt zu unterscheiden.'},
   {s:'S2',q:'Welche Strategie hilft Plattformen typischerweise, das Kaltstart-Problem zu überwinden?',opts:['Sofortiger globaler Launch mit maximalen Marketingausgaben','Fokus auf eine klar abgegrenzte Nutzergruppe, die sofort echten Wert erfährt','Preiserhöhung zur Positionierung als Premium-Produkt','Vollständiger Verzicht auf externe Nutzer bis zur technischen Reife'],c:1,fb:'Erfolgreiche Plattformen starten oft in einer kleinen, klar definierten Nische, in der Netzwerkeffekte schnell spürbar werden (z. B. Facebook an einer Universität, Airbnb in einer Stadt). Erst danach wird skaliert.'},
 ];
 
@@ -651,12 +910,7 @@ function drawQ(){
   const q=QS[qI], dn=qA[qI]!==undefined;
   document.getElementById('qfill').style.width=(qI/QS.length*100)+'%';
   document.getElementById('qcnt').textContent=`${qI+1} / ${QS.length}`;
-  const col=q.s==='S2'?'var(--orange)':'var(--cyan)';
-  let h=`<div style="font-family:var(--mono);font-size:.57rem;letter-spacing:.14em;text-transform:uppercase;color:${col};margin-bottom:10px;display:flex;align-items:center;gap:8px">
-    <span style="display:inline-block;width:7px;height:7px;border-radius:50%;background:${col}"></span>
-    Session ${q.s==='S2'?'2 · Plattformökonomie':'1 · Netzwerkgrundlagen'}
-  </div>`;
-  h+=`<div class="q-text">${q.q}</div><div class="q-opts">`;
+  let h=`<div class="q-text">${q.q}</div><div class="q-opts">`;
   q.opts.forEach((o,i)=>{
     let c='';
     if(dn){if(i===q.c)c='correct';else if(i===qA[qI])c='wrong';}
@@ -675,17 +929,18 @@ async function finishQ(){
   qFinished=true;
   const score=QS.filter((_,i)=>qA[i]===QS[i].c).length;
   const pct=Math.round(score/QS.length*100);
-  const s1=QS.filter((q,i)=>q.s==='S1'&&qA[i]===q.c).length, t1=QS.filter(q=>q.s==='S1').length;
-  const s2=QS.filter((q,i)=>q.s==='S2'&&qA[i]===q.c).length, t2=QS.filter(q=>q.s==='S2').length;
   const details=QS.map((_,i)=>qA[i]===QS[i].c?'✓':'✗').join(' ');
+  const rec={action:'save',name:qUser,score,total:QS.length,pct,ts:new Date().toISOString(),details};
 
   // Save to Google Sheets
-  const rec={action:'save',name:qUser,score,total:QS.length,pct,ts:new Date().toISOString(),details};
   if(SHEETS_URL!=='IHRE_APPS_SCRIPT_URL_HIER_EINTRAGEN'){
     try{await fetch(SHEETS_URL,{method:'POST',mode:'no-cors',headers:{'Content-Type':'application/json'},body:JSON.stringify(rec)});}catch(e){}
   }
   // Fallback: claude.ai storage
   try{const k='nwoe_'+Date.now()+'_'+Math.random().toString(36).slice(2,5);await window.storage.set(k,JSON.stringify(rec),true);}catch(e){}
+  // Push to local creator list
+  window._nwoeResults = window._nwoeResults||[];
+  window._nwoeResults.push(rec);
 
   // Show result
   document.getElementById('qMain').style.display='none';
@@ -694,17 +949,17 @@ async function finishQ(){
   document.getElementById('qcnt').textContent=`${QS.length} / ${QS.length}`;
   document.getElementById('qrn').textContent=`${score}/${QS.length}`;
   const grade=pct>=80?'Ausgezeichnet':pct>=60?'Bestanden':'Teilgenommen';
-  const msg=pct>=80?'Ausgezeichnete Leistung — Netzwerkdenken auf Profiniveau.':pct>=60?'Bestanden — beide Sessions festigen und vertiefen.':'Weitermachen — Struktur bestimmt Verhalten.';
-  document.getElementById('qrm').innerHTML=`${msg}<br><br><span style="font-family:var(--mono);font-size:.67rem;color:var(--cyan)">S1: ${s1}/${t1}</span>&emsp;<span style="font-family:var(--mono);font-size:.67rem;color:var(--orange)">S2: ${s2}/${t2}</span>`;
-  buildToken(qUser,score,QS.length,pct,grade,s1,t1,s2,t2);
+  const msg=pct>=80?'Ausgezeichnete Leistung — Netzwerkdenken auf Profiniveau.':pct>=60?'Bestanden — die Konzepte weiter festigen und vertiefen.':'Weitermachen — Struktur bestimmt Verhalten.';
+  document.getElementById('qrm').innerHTML=msg;
+  buildToken(qUser,score,QS.length,pct,grade);
 }
 
 // ── SUCCESS TOKEN ──
 let _svg='';
-function buildToken(name,score,total,pct,grade,s1,t1,s2,t2){
+function buildToken(name,score,total,pct,grade){
   const ac=pct>=80?'#0fb8cc':pct>=60?'#3aaf72':'#527080';
   const esc=s=>String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
-  _svg=`<svg xmlns="http://www.w3.org/2000/svg" width="360" height="500" viewBox="0 0 360 500">
+  _svg=`<svg xmlns="http://www.w3.org/2000/svg" width="360" height="460" viewBox="0 0 360 460">
   <defs>
     <linearGradient id="tbg" x1="0" y1="0" x2="0" y2="1">
       <stop offset="0%" stop-color="#0e1a22"/><stop offset="100%" stop-color="#0b1319"/>
@@ -713,46 +968,145 @@ function buildToken(name,score,total,pct,grade,s1,t1,s2,t2){
       <stop offset="0%" stop-color="${ac}" stop-opacity=".13"/><stop offset="100%" stop-color="transparent"/>
     </radialGradient>
   </defs>
-  <rect width="360" height="500" rx="6" fill="url(#tbg)" stroke="${ac}" stroke-width="1.5"/>
-  <rect width="360" height="500" rx="6" fill="url(#tgl)"/>
+  <rect width="360" height="460" rx="6" fill="url(#tbg)" stroke="${ac}" stroke-width="1.5"/>
+  <rect width="360" height="460" rx="6" fill="url(#tgl)"/>
   <rect x="0" y="0" width="360" height="3" rx="1.5" fill="${ac}"/>
-  <!-- eyebrow -->
-  <text x="180" y="36" font-family="DM Mono,monospace" font-size="7.5" fill="${ac}" letter-spacing="2.5" text-anchor="middle" opacity=".85">NETZWERKÖKONOMIE · MEDIA UNIVERSITY</text>
-  <text x="180" y="50" font-family="DM Mono,monospace" font-size="6.5" fill="#3d5a6a" letter-spacing="1.5" text-anchor="middle">AN EXPLORABLE BY PROF. THOMAS PETZOLD PH.D.</text>
-  <!-- hex badge -->
+  <text x="180" y="36" font-family="DM Mono,monospace" font-size="7.5" fill="${ac}" letter-spacing="2.5" text-anchor="middle" opacity=".85">NETZWERKÖKONOMIE</text>
+  <text x="180" y="50" font-family="DM Mono,monospace" font-size="6.5" fill="#3d5a6a" letter-spacing="1.5" text-anchor="middle">PROF. THOMAS PETZOLD PH.D.</text>
   <polygon points="180,68 204,81 204,107 180,120 156,107 156,81" fill="none" stroke="${ac}" stroke-width="1.5" opacity=".75"/>
   <polygon points="180,76 198,86 198,106 180,116 162,106 162,86" fill="none" stroke="${ac}" stroke-width=".5" opacity=".25"/>
-  <text x="180" y="96" font-family="Playfair Display,serif" font-size="17" fill="${ac}" text-anchor="middle" font-style="italic">S</text>
-  <text x="180" y="113" font-family="DM Mono,monospace" font-size="8.5" fill="${ac}" text-anchor="middle">1+2</text>
-  <!-- session tag -->
-  <text x="180" y="148" font-family="DM Mono,monospace" font-size="6.5" fill="${ac}" text-anchor="middle" letter-spacing="1.8">SESSIONS 1 &amp; 2 · ABGESCHLOSSEN</text>
+  <text x="180" y="97" font-family="Playfair Display,serif" font-size="17" fill="${ac}" text-anchor="middle" font-style="italic">N</text>
+  <text x="180" y="114" font-family="DM Mono,monospace" font-size="7.5" fill="${ac}" text-anchor="middle">ÖK</text>
+  <text x="180" y="148" font-family="DM Mono,monospace" font-size="6.5" fill="${ac}" text-anchor="middle" letter-spacing="1.8">QUIZ · 15 FRAGEN · ABGESCHLOSSEN</text>
   <line x1="44" y1="160" x2="316" y2="160" stroke="${ac}" stroke-width=".5" opacity=".35"/>
-  <!-- module title -->
   <text x="180" y="190" font-family="Playfair Display,serif" font-size="19" fill="#d8e8ee" text-anchor="middle" font-style="italic">Netzwerkökonomie</text>
   <text x="180" y="210" font-family="DM Mono,monospace" font-size="6.5" fill="#3d5a6a" text-anchor="middle" letter-spacing="1">WERT · REICHWEITE · HANDLUNGSLOGIK</text>
   <line x1="44" y1="224" x2="316" y2="224" stroke="${ac}" stroke-width=".5" opacity=".35"/>
-  <!-- name -->
   <text x="180" y="248" font-family="DM Mono,monospace" font-size="6.5" fill="#3d5a6a" text-anchor="middle" letter-spacing="2">ZERTIFIZIERT FÜR</text>
-  <text x="180" y="270" font-family="Playfair Display,serif" font-size="18" fill="#d8e8ee" text-anchor="middle">${esc(name)}</text>
-  <!-- score -->
-  <text x="180" y="304" font-family="DM Mono,monospace" font-size="6.5" fill="#3d5a6a" text-anchor="middle" letter-spacing="1.5">QUIZ · 15 FRAGEN</text>
-  <text x="180" y="358" font-family="Playfair Display,serif" font-size="58" fill="${ac}" text-anchor="middle" font-weight="300">${score}/${total}</text>
-  <text x="180" y="378" font-family="DM Mono,monospace" font-size="9.5" fill="${ac}" text-anchor="middle" letter-spacing=".5">${grade.toUpperCase()} · ${pct}%</text>
-  <!-- session split -->
-  <rect x="44" y="392" width="122" height="34" rx="3" fill="rgba(15,184,204,.07)" stroke="rgba(15,184,204,.25)" stroke-width="1"/>
-  <text x="105" y="406" font-family="DM Mono,monospace" font-size="6" fill="#0fb8cc" text-anchor="middle" letter-spacing="1">SESSION 1</text>
-  <text x="105" y="420" font-family="Playfair Display,serif" font-size="13" fill="#0fb8cc" text-anchor="middle">${s1}/${t1}</text>
-  <rect x="194" y="392" width="122" height="34" rx="3" fill="rgba(232,115,42,.07)" stroke="rgba(232,115,42,.25)" stroke-width="1"/>
-  <text x="255" y="406" font-family="DM Mono,monospace" font-size="6" fill="#e8732a" text-anchor="middle" letter-spacing="1">SESSION 2</text>
-  <text x="255" y="420" font-family="Playfair Display,serif" font-size="13" fill="#e8732a" text-anchor="middle">${s2}/${t2}</text>
-  <line x1="44" y1="438" x2="316" y2="438" stroke="${ac}" stroke-width=".5" opacity=".3"/>
-  <text x="180" y="456" font-family="DM Mono,monospace" font-size="6.5" fill="#2a3f50" text-anchor="middle" letter-spacing="1">MEDIA UNIVERSITY OF APPLIED SCIENCES · 2026</text>
-  <text x="180" y="470" font-family="DM Mono,monospace" font-size="6" fill="#1e3040" text-anchor="middle">Designed by Prof. T. Petzold Ph.D. &amp; Claude</text>
-  <text x="24" y="490" font-family="monospace" font-size="12" fill="${ac}" opacity=".25">◆</text>
-  <text x="336" y="490" font-family="monospace" font-size="12" fill="${ac}" opacity=".25" text-anchor="end">◆</text>
+  <text x="180" y="272" font-family="Playfair Display,serif" font-size="18" fill="#d8e8ee" text-anchor="middle">${esc(name)}</text>
+  <text x="180" y="316" font-family="Playfair Display,serif" font-size="62" fill="${ac}" text-anchor="middle" font-weight="300">${score}/${total}</text>
+  <text x="180" y="338" font-family="DM Mono,monospace" font-size="9.5" fill="${ac}" text-anchor="middle" letter-spacing=".5">${grade.toUpperCase()} · ${pct}%</text>
+  <line x1="44" y1="354" x2="316" y2="354" stroke="${ac}" stroke-width=".5" opacity=".3"/>
+  <text x="180" y="376" font-family="DM Mono,monospace" font-size="6.5" fill="#2a3f50" text-anchor="middle" letter-spacing="1">An explorable by Prof. Thomas Petzold Ph.D. &amp; Claude · 2026</text>
+  <text x="24" y="448" font-family="monospace" font-size="12" fill="${ac}" opacity=".25">◆</text>
+  <text x="336" y="448" font-family="monospace" font-size="12" fill="${ac}" opacity=".25" text-anchor="end">◆</text>
 </svg>`;
   document.getElementById('tokenWrap').innerHTML=_svg;
 }
+
+// ── CREATOR DASHBOARD ──
+(function(){
+  const PASS='NwOe2026';
+  // Invisible trigger: click bottom-left corner 3× within 2s
+  let clicks=0,timer;
+  document.addEventListener('click',e=>{
+    if(e.clientX<60&&e.clientY>window.innerHeight-60){
+      clicks++;
+      clearTimeout(timer);
+      if(clicks>=3){clicks=0;showCreatorPrompt();}
+      else timer=setTimeout(()=>clicks=0,2000);
+    }
+  });
+  function showCreatorPrompt(){
+    const existing=document.getElementById('creatorPanel');
+    if(existing){existing.style.display=existing.style.display==='none'?'block':'none';if(existing.style.display==='block')loadCreatorData();return;}
+    const panel=document.createElement('div');
+    panel.id='creatorPanel';
+    panel.style.cssText='position:fixed;bottom:0;left:0;right:0;z-index:9000;background:#0b1319;border-top:1px solid #1d3040;padding:0;font-family:DM Mono,monospace;';
+    panel.innerHTML=`
+      <div id="cGate" style="padding:24px 32px;display:flex;align-items:center;gap:14px;">
+        <span style="font-size:.65rem;letter-spacing:.15em;text-transform:uppercase;color:#527080;">Creator-Passwort</span>
+        <input id="cPw" type="password" placeholder="••••••••" style="background:#13222d;border:1px solid #253d52;border-radius:3px;padding:7px 12px;color:#d8e8ee;font-family:DM Mono,monospace;font-size:.8rem;width:180px;">
+        <button onclick="unlockCreator()" style="background:#0fb8cc;border:none;border-radius:3px;padding:7px 16px;color:#0b1319;font-family:DM Mono,monospace;font-size:.65rem;letter-spacing:.1em;cursor:pointer;">Entsperren</button>
+        <button onclick="document.getElementById('creatorPanel').style.display='none'" style="background:none;border:1px solid #1d3040;border-radius:3px;padding:7px 12px;color:#527080;font-family:DM Mono,monospace;font-size:.65rem;cursor:pointer;">✕</button>
+        <span id="cErr" style="color:#e8732a;font-size:.7rem;display:none;">Falsches Passwort.</span>
+      </div>
+      <div id="cBoard" style="display:none;padding:24px 32px;max-height:60vh;overflow-y:auto;">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:18px;">
+          <span style="font-size:.65rem;letter-spacing:.2em;text-transform:uppercase;color:#0fb8cc;">◎ Creator Dashboard · Netzwerkökonomie</span>
+          <div style="display:flex;gap:8px;">
+            <button onclick="loadCreatorData()" style="background:none;border:1px solid #253d52;border-radius:3px;padding:5px 12px;color:#527080;font-family:DM Mono,monospace;font-size:.6rem;cursor:pointer;">↺ Aktualisieren</button>
+            <button onclick="exportCreatorCSV()" style="background:none;border:1px solid #253d52;border-radius:3px;padding:5px 12px;color:#527080;font-family:DM Mono,monospace;font-size:.6rem;cursor:pointer;">⬇ CSV Export</button>
+            <button onclick="document.getElementById('creatorPanel').style.display='none'" style="background:none;border:1px solid #1d3040;border-radius:3px;padding:5px 10px;color:#527080;font-family:DM Mono,monospace;font-size:.6rem;cursor:pointer;">✕</button>
+          </div>
+        </div>
+        <div id="cStats" style="display:flex;gap:24px;margin-bottom:18px;flex-wrap:wrap;"></div>
+        <div id="cTable"></div>
+      </div>`;
+    document.body.appendChild(panel);
+    document.getElementById('cPw').addEventListener('keydown',e=>{if(e.key==='Enter')unlockCreator();});
+  }
+  window.unlockCreator=function(){
+    if(document.getElementById('cPw').value===PASS){
+      document.getElementById('cGate').style.display='none';
+      document.getElementById('cBoard').style.display='block';
+      loadCreatorData();
+    }else{
+      document.getElementById('cErr').style.display='inline';
+    }
+  };
+  window.loadCreatorData=async function(){
+    let records=window._nwoeResults||[];
+    // also try claude.ai storage
+    try{
+      const keys=await window.storage.list('nwoe_',true);
+      if(keys&&keys.keys){
+        const stored=[];
+        for(const k of keys.keys){try{const r=await window.storage.get(k,true);if(r)stored.push(JSON.parse(r.value));}catch(e){}}
+        // merge with local, deduplicate by ts+name
+        const existing=new Set(records.map(r=>r.ts+r.name));
+        stored.forEach(r=>{if(!existing.has(r.ts+r.name))records.push(r);});
+      }
+    }catch(e){}
+    // also try Sheets GET
+    if(SHEETS_URL!=='IHRE_APPS_SCRIPT_URL_HIER_EINTRAGEN'){
+      try{
+        const res=await fetch(SHEETS_URL+'?action=load');
+        const data=await res.json();
+        if(data.records){
+          const existing=new Set(records.map(r=>r.ts+r.name));
+          data.records.forEach(r=>{if(!existing.has(r.ts+r.name))records.push(r);});
+        }
+      }catch(e){}
+    }
+    records.sort((a,b)=>(b.ts||'').localeCompare(a.ts||''));
+    window._nwoeCreatorRecords=records;
+    const n=records.length;
+    const avg=n?Math.round(records.reduce((s,r)=>s+(r.pct||0),0)/n):0;
+    const top=n?Math.max(...records.map(r=>r.pct||0)):0;
+    const exc=records.filter(r=>(r.pct||0)>=80).length;
+    document.getElementById('cStats').innerHTML=[
+      ['Teilnahmen',n],['Ø Ergebnis',avg+'%'],['Bestes',top+'%'],['Ausgezeichnet',exc]
+    ].map(([l,v])=>`<div style="background:#13222d;border:1px solid #1d3040;border-radius:4px;padding:12px 18px;min-width:90px"><div style="font-size:1.4rem;color:#0fb8cc;font-family:Playfair Display,serif">${v}</div><div style="font-size:.57rem;color:#527080;letter-spacing:.1em;text-transform:uppercase;margin-top:3px">${l}</div></div>`).join('');
+    if(!n){document.getElementById('cTable').innerHTML='<div style="color:#527080;font-size:.8rem;padding:12px 0">Noch keine Ergebnisse vorhanden.</div>';return;}
+    let html=`<table style="width:100%;border-collapse:collapse;font-size:.75rem;">
+      <thead><tr style="border-bottom:1px solid #1d3040;color:#527080;text-align:left;">
+        <th style="padding:8px 12px 8px 0">Name</th><th style="padding:8px 12px">Ergebnis</th><th style="padding:8px 12px">%</th><th style="padding:8px 12px">Details</th><th style="padding:8px 0 8px 12px">Zeitpunkt</th>
+      </tr></thead><tbody>`;
+    records.forEach(r=>{
+      const col=(r.pct||0)>=80?'#0fb8cc':(r.pct||0)>=60?'#3aaf72':'#527080';
+      const dt=r.ts?new Date(r.ts).toLocaleString('de-DE'):'—';
+      html+=`<tr style="border-bottom:1px solid #0e1925">
+        <td style="padding:8px 12px 8px 0;color:#d8e8ee">${String(r.name||'—').replace(/</g,'&lt;')}</td>
+        <td style="padding:8px 12px;color:${col};font-weight:600">${r.score||0}/${r.total||15}</td>
+        <td style="padding:8px 12px;color:${col}">${r.pct||0}%</td>
+        <td style="padding:8px 12px;color:#2a4050;letter-spacing:.12em">${r.details||'—'}</td>
+        <td style="padding:8px 0 8px 12px;color:#2a4050">${dt}</td>
+      </tr>`;
+    });
+    html+='</tbody></table>';
+    document.getElementById('cTable').innerHTML=html;
+  };
+  window.exportCreatorCSV=function(){
+    const records=window._nwoeCreatorRecords||[];
+    if(!records.length)return;
+    let csv='Name,Score,Total,Prozent,Details,Zeitpunkt\n';
+    records.forEach(r=>{csv+=`"${(r.name||'').replace(/"/g,'""')}",${r.score||0},${r.total||15},${r.pct||0},"${r.details||''}","${r.ts||''}"\n`;});
+    const a=document.createElement('a');
+    a.href=URL.createObjectURL(new Blob([csv],{type:'text/csv;charset=utf-8;'}));
+    a.download='Netzwerkoekonomie_Ergebnisse.csv';a.click();
+  };
+})();
 
 function downloadToken(){
   if(!_svg)return;
