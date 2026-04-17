@@ -1,0 +1,777 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Netzwerkökonomie · Session 1 · Media University</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400;1,700&family=DM+Mono:wght@300;400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0b1319;--bg2:#0e1a22;--bg3:#111f29;
+  --surface:#13222d;--border:#1d3040;--border2:#253d52;
+  --text:#d8e8ee;--muted:#527080;
+  --cyan:#0fb8cc;--cyan-d:#0a8fa0;--cyan-dim:rgba(15,184,204,.12);
+  --orange:#e8732a;--orange-dim:rgba(232,115,42,.12);
+  --blue:#4a7fd4;--green:#3aaf72;
+  --serif:'Playfair Display',Georgia,serif;
+  --sans:'DM Sans',sans-serif;--mono:'DM Mono',monospace;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text);font-family:var(--sans);font-weight:300;line-height:1.7;overflow-x:hidden}
+body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:9999;opacity:.45;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.04'/%3E%3C/svg%3E")}
+
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;z-index:800;background:rgba(11,19,25,.92);backdrop-filter:blur(14px);border-bottom:1px solid var(--border);display:flex;align-items:center;padding:0 32px;height:46px}
+.nav-logo{font-family:var(--mono);font-size:.64rem;letter-spacing:.2em;text-transform:uppercase;color:var(--cyan);margin-right:24px;flex-shrink:0}
+.nav-links{display:flex;overflow-x:auto;scrollbar-width:none;flex:1}
+.nav-links::-webkit-scrollbar{display:none}
+.nav-a{font-family:var(--mono);font-size:.59rem;letter-spacing:.1em;text-transform:uppercase;color:rgba(216,232,238,.3);padding:0 12px;height:46px;display:flex;align-items:center;border-bottom:2px solid transparent;text-decoration:none;white-space:nowrap;transition:color .2s,border-color .2s}
+.nav-a:hover{color:rgba(216,232,238,.65)}
+.nav-a.active{color:var(--cyan);border-bottom-color:var(--cyan)}
+
+/* HERO */
+#hero{min-height:100vh;padding-top:46px;display:grid;grid-template-columns:1fr 360px;position:relative;overflow:hidden}
+@media(max-width:800px){#hero{grid-template-columns:1fr}}
+.hero-left{padding:80px 60px 60px;display:flex;flex-direction:column;justify-content:center;position:relative;z-index:2}
+@media(max-width:600px){.hero-left{padding:60px 28px 48px}}
+.hero-eyebrow{font-family:var(--mono);font-size:.63rem;letter-spacing:.22em;text-transform:uppercase;color:var(--cyan);margin-bottom:22px;display:flex;align-items:center;gap:12px}
+.hero-eyebrow::before{content:'';display:block;width:26px;height:1px;background:var(--cyan)}
+h1.hero-h1{font-family:var(--serif);font-weight:700;font-size:clamp(3rem,6.5vw,5.8rem);line-height:1.06;color:var(--text);letter-spacing:-.015em;margin-bottom:28px}
+h1.hero-h1 em{font-style:italic;color:var(--cyan)}
+.hero-lf{font-size:.97rem;color:var(--muted);max-width:480px;line-height:1.7;margin-bottom:52px;padding-left:18px;border-left:2px solid var(--border2)}
+.hero-stats{display:flex;gap:36px;flex-wrap:wrap}
+.hs-num{font-family:var(--serif);font-size:2.4rem;font-weight:700;color:var(--cyan);line-height:1}
+.hs-lbl{font-family:var(--mono);font-size:.57rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-top:5px}
+.hero-right{background:var(--bg2);position:relative;overflow:hidden}
+.hero-right::after{content:'';position:absolute;inset:0;background:linear-gradient(90deg,var(--bg) 0%,transparent 45%);pointer-events:none}
+#heroCanvas{width:100%;height:100%;display:block}
+
+/* CHAPTER */
+.ch{position:relative;overflow:hidden}
+.ch-inner{max-width:1120px;margin:0 auto;padding:90px 40px;position:relative;z-index:2}
+@media(max-width:600px){.ch-inner{padding:60px 22px}}
+.ch-ghost{position:absolute;right:-10px;top:-20px;font-family:var(--serif);font-weight:700;font-size:clamp(9rem,18vw,18rem);color:rgba(255,255,255,.016);line-height:1;pointer-events:none;z-index:1}
+.ch-a{background:var(--bg)}
+.ch-b{background:var(--bg2)}
+.ch-c{background:var(--bg3)}
+.ch-a::before,.ch-b::before,.ch-c::before{content:'';position:absolute;border-radius:50%;filter:blur(90px);pointer-events:none;z-index:1}
+.ch-a::before{width:480px;height:480px;top:-80px;right:-80px;background:radial-gradient(circle,rgba(15,184,204,.055) 0%,transparent 70%)}
+.ch-b::before{width:380px;height:380px;bottom:-60px;left:-60px;background:radial-gradient(circle,rgba(232,115,42,.045) 0%,transparent 70%)}
+.ch-c::before{width:520px;height:520px;top:0;right:0;background:radial-gradient(circle,rgba(74,127,212,.045) 0%,transparent 70%)}
+
+/* CHAPTER HEADER */
+.ch-hd{display:flex;gap:22px;align-items:flex-start;margin-bottom:52px;padding-bottom:32px;border-bottom:1px solid var(--border)}
+.ch-num{font-family:var(--mono);font-size:.63rem;letter-spacing:.15em;text-transform:uppercase;color:var(--cyan);flex-shrink:0;padding-top:5px}
+.ch-title{font-family:var(--serif);font-weight:400;font-size:clamp(1.7rem,3vw,2.6rem);line-height:1.15;color:var(--text)}
+.ch-sub{margin-top:8px;font-size:.87rem;color:var(--muted);max-width:560px;line-height:1.65}
+
+/* PULL QUOTE */
+.pull{border-left:3px solid var(--cyan);padding:18px 24px;margin:36px 0;background:var(--cyan-dim);border-radius:0 4px 4px 0}
+.pull p{font-family:var(--serif);font-style:italic;font-size:1.08rem;color:var(--text);line-height:1.6}
+.pull cite{display:block;margin-top:8px;font-family:var(--mono);font-size:.6rem;letter-spacing:.1em;color:var(--muted);font-style:normal}
+
+/* CANVAS BOX */
+.cv-box{border-radius:6px;overflow:hidden;border:1px solid var(--border2);background:var(--bg);box-shadow:0 12px 48px rgba(0,0,0,.45)}
+.cv-box canvas{display:block;width:100%}
+.cv-lbl{font-family:var(--mono);font-size:.58rem;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);text-align:center;padding:10px;border-top:1px solid var(--border);background:var(--surface)}
+
+/* LAYOUT */
+.two-col{display:grid;grid-template-columns:1fr 300px;gap:32px;align-items:start}
+.two-col-w{display:grid;grid-template-columns:1fr 320px;gap:34px;align-items:start}
+@media(max-width:720px){.two-col,.two-col-w{grid-template-columns:1fr}}
+
+/* SIDE PANEL */
+.side{background:var(--surface);border:1px solid var(--border);border-radius:6px;padding:22px}
+.side-ttl{font-family:var(--mono);font-size:.62rem;letter-spacing:.15em;text-transform:uppercase;color:var(--cyan);margin-bottom:16px}
+
+/* BUTTONS */
+.btn{font-family:var(--mono);font-size:.62rem;letter-spacing:.1em;text-transform:uppercase;padding:9px 16px;border:1px solid var(--border2);background:none;color:var(--muted);border-radius:3px;cursor:pointer;transition:all .15s;width:100%;margin-bottom:8px;display:block;text-align:center}
+.btn:hover{border-color:var(--cyan);color:var(--cyan);background:var(--cyan-dim)}
+.btn.orange:hover{border-color:var(--orange);color:var(--orange);background:var(--orange-dim)}
+.btn.primary{background:var(--cyan);color:var(--bg);border-color:var(--cyan);font-weight:400}
+.btn.primary:hover{opacity:.85}
+
+/* STATUS BOX */
+.k-status{background:var(--bg);border:1px solid var(--border);border-radius:3px;padding:11px 14px;font-family:var(--mono);font-size:.7rem;color:var(--muted);margin-bottom:12px;transition:all .3s;letter-spacing:.04em}
+.k-status.ok{border-color:var(--green);color:var(--green);background:rgba(58,175,114,.08)}
+.k-status.bad{border-color:var(--orange);color:var(--orange);background:var(--orange-dim)}
+.k-cnt{font-family:var(--mono);font-size:.72rem;color:var(--cyan);margin-bottom:14px;letter-spacing:.06em}
+.k-rule{font-size:.82rem;color:var(--muted);line-height:1.7;margin-bottom:16px}
+.k-rule strong{color:var(--text)}
+
+/* METRICS */
+.m-item{background:var(--bg);border:1px solid var(--border);border-radius:4px;padding:15px;margin-bottom:10px;cursor:pointer;transition:all .18s}
+.m-item:hover{border-color:var(--border2)}
+.m-item.active{border-color:var(--cyan);background:var(--cyan-dim)}
+.m-item.active .m-tag{color:var(--cyan)}
+.m-tag{font-family:var(--mono);font-size:.57rem;letter-spacing:.15em;text-transform:uppercase;color:var(--muted)}
+.m-name{font-family:var(--serif);font-size:1rem;color:var(--text);margin:3px 0}
+.m-val{font-family:var(--mono);font-size:1.22rem;color:var(--cyan);letter-spacing:.02em}
+.m-def{font-size:.77rem;color:var(--muted);margin-top:4px;line-height:1.5}
+
+/* SMALL WORLD */
+.sw-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+@media(max-width:620px){.sw-grid{grid-template-columns:1fr}}
+.sw-box{background:var(--bg);border:1px solid var(--border2);border-radius:6px;overflow:hidden}
+.sw-box canvas{display:block;width:100%}
+.sw-head{padding:14px 18px 8px}
+.sw-tag{font-family:var(--mono);font-size:.57rem;letter-spacing:.15em;text-transform:uppercase;color:var(--muted);margin-bottom:4px}
+.sw-ttl{font-family:var(--serif);font-size:1rem;color:var(--text)}
+.sw-stats{display:flex;gap:18px;padding:10px 18px 14px;border-top:1px solid var(--border)}
+.sw-sv{font-family:var(--mono);font-size:1.1rem;color:var(--cyan);letter-spacing:.04em}
+.sw-sl{font-family:var(--mono);font-size:.53rem;color:var(--muted);letter-spacing:.1em;text-transform:uppercase}
+.slider-row{padding:20px 26px;background:var(--surface);border:1px solid var(--border);border-radius:6px;margin-top:18px}
+.slider-row label{font-family:var(--mono);font-size:.63rem;color:var(--text);display:flex;justify-content:space-between;margin-bottom:10px}
+input[type=range]{width:100%;accent-color:var(--cyan);cursor:pointer}
+
+/* SEGREGATION */
+.seg-ctrl{background:var(--surface);border:1px solid var(--border);border-radius:6px;padding:20px}
+.seg-ctrl-ttl{font-family:var(--mono);font-size:.62rem;letter-spacing:.15em;text-transform:uppercase;color:var(--cyan);margin-bottom:16px}
+.ctrl-grp{margin-bottom:18px}
+.ctrl-grp label{font-family:var(--mono);font-size:.62rem;letter-spacing:.07em;color:var(--text);display:flex;justify-content:space-between;margin-bottom:8px}
+.seg-stats{display:flex;gap:10px;margin-bottom:18px}
+.ss{background:var(--bg);border:1px solid var(--border);border-radius:4px;padding:10px 12px;flex:1}
+.ss-v{font-family:var(--serif);font-size:1.5rem;color:var(--cyan)}
+.ss-l{font-family:var(--mono);font-size:.52rem;color:var(--muted);letter-spacing:.1em;text-transform:uppercase}
+.insight{background:var(--bg);border:1px solid var(--border);border-radius:4px;padding:13px;font-size:.79rem;color:var(--muted);line-height:1.65;border-left:3px solid var(--orange)}
+.insight strong{color:var(--text)}
+
+/* CARD GRID */
+.card-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:16px;margin:28px 0}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:6px;padding:22px;transition:border-color .2s,transform .15s;position:relative}
+.card::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--cyan);border-radius:6px 0 0 6px}
+.card.orange::before{background:var(--orange)}
+.card.blue::before{background:var(--blue)}
+.card:hover{border-color:var(--border2);transform:translateY(-2px)}
+.card-tag{font-family:var(--mono);font-size:.58rem;letter-spacing:.15em;text-transform:uppercase;color:var(--cyan);margin-bottom:7px}
+.card.orange .card-tag{color:var(--orange)}
+.card.blue .card-tag{color:var(--blue)}
+.card-title{font-family:var(--serif);font-size:1.02rem;font-weight:400;color:var(--text);margin-bottom:8px}
+.card-body{font-size:.83rem;color:#7a9ead;line-height:1.65}
+
+/* DOMAINS */
+.domains{display:grid;grid-template-columns:repeat(5,1fr);gap:12px}
+@media(max-width:860px){.domains{grid-template-columns:repeat(3,1fr)}}
+@media(max-width:520px){.domains{grid-template-columns:1fr 1fr}}
+.dtile{background:var(--surface);border:1px solid var(--border);border-radius:6px;padding:18px 14px;cursor:pointer;transition:all .2s;position:relative;overflow:hidden}
+.dtile::after{content:'';position:absolute;bottom:0;left:0;right:0;height:2px;background:var(--cyan);transform:scaleX(0);transition:transform .2s}
+.dtile:hover::after,.dtile.open::after{transform:scaleX(1)}
+.dtile.open{background:rgba(15,184,204,.06);border-color:var(--border2)}
+.di-icon{font-size:1.55rem;margin-bottom:10px}
+.di-title{font-family:var(--serif);font-size:.92rem;color:var(--text);margin-bottom:3px}
+.di-sub{font-family:var(--mono);font-size:.56rem;color:var(--muted);letter-spacing:.07em}
+.ddetail{display:none;grid-column:1/-1;background:var(--surface);border:1px solid var(--border2);border-radius:6px;padding:26px;animation:fs .22s ease}
+.ddetail.show{display:block}
+@keyframes fs{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:translateY(0)}}
+.ddetail h3{font-family:var(--serif);font-size:1.25rem;color:var(--text);margin-bottom:10px}
+.ddetail p{font-size:.87rem;color:#7a9ead;line-height:1.7;max-width:640px}
+.dtags{display:flex;flex-wrap:wrap;gap:7px;margin-top:13px}
+.dtag{font-family:var(--mono);font-size:.58rem;letter-spacing:.1em;padding:3px 8px;border:1px solid var(--border2);border-radius:2px;color:var(--muted)}
+
+/* INFO STRIP */
+.istrip{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:14px;margin-top:32px}
+.ibox{background:var(--surface);border:1px solid var(--border);border-radius:6px;padding:18px}
+.ibox-ic{font-family:var(--mono);font-size:.62rem;color:var(--cyan);letter-spacing:.1em;margin-bottom:7px}
+.ibox-t{font-family:var(--serif);font-size:.93rem;color:var(--text);margin-bottom:5px}
+.ibox-b{font-size:.79rem;color:var(--muted);line-height:1.6}
+
+/* WORKSHOP */
+.ws-wrap{background:var(--bg2);border:1px solid var(--border);border-radius:6px;overflow:hidden}
+#wsCanvas{display:block;width:100%;cursor:crosshair}
+.ws-bar{padding:13px 18px;border-bottom:1px solid var(--border);display:flex;gap:7px;flex-wrap:wrap;align-items:center}
+.ws-btn{font-family:var(--mono);font-size:.59rem;letter-spacing:.07em;padding:5px 11px;border:1px solid var(--border2);background:none;color:var(--muted);border-radius:3px;cursor:pointer;transition:all .15s}
+.ws-btn:hover,.ws-btn.active{border-color:var(--cyan);color:var(--cyan);background:var(--cyan-dim)}
+.ws-btn.del:hover{border-color:var(--orange);color:var(--orange);background:var(--orange-dim)}
+.ws-info-bar{padding:8px 18px;font-family:var(--mono);font-size:.6rem;color:var(--muted);border-top:1px solid var(--border);background:var(--surface);letter-spacing:.04em}
+
+/* AUSBLICK */
+.ab-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+@media(max-width:560px){.ab-grid{grid-template-columns:1fr}}
+.ab-card{background:var(--surface);border:1px solid var(--border);border-radius:6px;padding:22px;transition:border-color .2s}
+.ab-card:hover{border-color:var(--border2)}
+.ab-tag{font-family:var(--mono);font-size:.57rem;letter-spacing:.15em;text-transform:uppercase;color:var(--muted);margin-bottom:10px}
+.ab-title{font-family:var(--serif);font-size:1.02rem;color:var(--text);margin-bottom:7px}
+.ab-body{font-size:.82rem;color:var(--muted);line-height:1.65}
+
+/* QUIZ */
+#quiz{background:var(--bg2);border-top:1px solid var(--border)}
+.qwrap{max-width:700px;margin:0 auto;padding:80px 40px}
+@media(max-width:600px){.qwrap{padding:60px 22px}}
+.qwrap h2{font-family:var(--serif);font-size:2rem;font-weight:400;color:var(--text);margin-bottom:6px}
+.q-sub{font-family:var(--mono);font-size:.61rem;letter-spacing:.12em;color:var(--muted);margin-bottom:38px}
+/* name gate */
+.q-gate{text-align:center;padding:20px 0 40px}
+.q-gate p{font-size:.87rem;color:var(--muted);margin-bottom:24px;line-height:1.65}
+.q-name-input{width:100%;max-width:380px;background:var(--surface);border:1px solid var(--border2);border-radius:4px;padding:12px 16px;font-family:var(--sans);font-size:1rem;color:var(--text);margin-bottom:14px;display:block;margin-left:auto;margin-right:auto;transition:border-color .2s}
+.q-name-input:focus{outline:none;border-color:var(--cyan)}
+.q-name-input::placeholder{color:var(--muted)}
+/* progress */
+.qprog{display:flex;align-items:center;gap:14px;margin-bottom:30px}
+.qpbar{flex:1;height:2px;background:var(--border2);border-radius:1px}
+.qpfill{height:100%;background:var(--cyan);border-radius:1px;transition:width .35s ease}
+.qpcnt{font-family:var(--mono);font-size:.6rem;color:var(--muted);letter-spacing:.1em;white-space:nowrap}
+.q-text{font-family:var(--serif);font-size:1.12rem;color:var(--text);line-height:1.5;margin-bottom:20px}
+.q-opts{display:flex;flex-direction:column;gap:9px;margin-bottom:18px}
+.q-opt{display:flex;align-items:center;gap:13px;padding:12px 17px;background:var(--surface);border:1px solid var(--border);border-radius:4px;cursor:pointer;font-size:.86rem;color:#7a9ead;transition:all .14s;text-align:left}
+.q-opt:hover{border-color:var(--border2);color:var(--text)}
+.q-opt.correct{background:rgba(58,175,114,.1);border-color:var(--green);color:var(--green)}
+.q-opt.wrong{background:var(--orange-dim);border-color:var(--orange);color:var(--orange)}
+.q-letter{font-family:var(--mono);font-size:.6rem;width:21px;height:21px;border-radius:50%;border:1px solid var(--border2);display:flex;align-items:center;justify-content:center;flex-shrink:0;color:var(--muted)}
+.q-opt.correct .q-letter{border-color:var(--green);color:var(--green)}
+.q-opt.wrong .q-letter{border-color:var(--orange);color:var(--orange)}
+.q-fb{background:rgba(15,184,204,.06);border-left:3px solid var(--cyan);padding:13px 17px;font-size:.82rem;color:var(--muted);line-height:1.65;display:none;margin-bottom:15px;border-radius:0 4px 4px 0}
+.q-fb.show{display:block}
+/* result + token */
+.qres{text-align:center;padding:20px 0 40px;display:none}
+.qres-num{font-family:var(--serif);font-size:5rem;color:var(--cyan);line-height:1}
+.qres-lbl{font-family:var(--mono);font-size:.63rem;color:var(--muted);letter-spacing:.15em;margin-top:6px}
+.qres-msg{color:var(--muted);font-size:.88rem;margin-top:18px;line-height:1.6}
+.token-wrap{margin:32px auto 0;display:flex;justify-content:center}
+.token-actions{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-top:16px}
+
+footer{background:var(--bg);border-top:1px solid var(--border);padding:22px 40px;text-align:center;font-family:var(--mono);font-size:.58rem;color:rgba(216,232,238,.18);letter-spacing:.12em}
+</style>
+</head>
+<body>
+
+<nav>
+  <span class="nav-logo">Netzwerkök. · S1</span>
+  <div class="nav-links">
+    <a class="nav-a" href="#hero">Intro</a>
+    <a class="nav-a" href="#koenig">01 Königsberg</a>
+    <a class="nav-a" href="#metriken">02 Metriken</a>
+    <a class="nav-a" href="#smallworld">03 Small World</a>
+    <a class="nav-a" href="#crowds">04 Crowds</a>
+    <a class="nav-a" href="#transfer">05 Transfer</a>
+    <a class="nav-a" href="#workshop">06 Workshop</a>
+    <a class="nav-a" href="#ausblick">07 Ausblick</a>
+    <a class="nav-a" href="#quiz">Quiz</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-left">
+    <div class="hero-eyebrow">Media University · Session 1</div>
+    <h1 class="hero-h1">Netzwerk<br><em>ökonomie</em></h1>
+    <p class="hero-lf">Wie formen Verbindungen Sichtbarkeit, Diffusion, Wert und Verwundbarkeit in realen Systemen?</p>
+    <div class="hero-stats">
+      <div><div class="hs-num" data-count="5350">0</div><div class="hs-lbl">Mio. Menschen online 2024</div></div>
+      <div><div class="hs-num" data-count="2.23" data-dec="2">0</div><div class="hs-lbl">Std. Social Media täglich</div></div>
+      <div><div class="hs-num" data-count="37">0</div><div class="hs-lbl">Mrd. $ Creator Ad Spend</div></div>
+    </div>
+  </div>
+  <div class="hero-right"><canvas id="heroCanvas"></canvas></div>
+</section>
+
+<!-- 01 KÖNIGSBERG -->
+<section id="koenig" class="ch ch-b">
+  <div class="ch-ghost">01</div>
+  <div class="ch-inner">
+    <div class="ch-hd">
+      <div class="ch-num">01</div>
+      <div>
+        <div class="ch-title">Das Königsberger Brückenproblem</div>
+        <div class="ch-sub">Euler fragt nicht „Welcher Weg?" sondern „Welche Struktur erlaubt überhaupt einen Weg?" — der Beginn des Netzwerkdenkens. Klicke Ufer → Brücke → Ufer.</div>
+      </div>
+    </div>
+    <div class="two-col-w">
+      <div>
+        <div class="cv-box"><canvas id="kCanvas" height="340"></canvas><div class="cv-lbl">Ufer anklicken · dann Brücke · dann Zielufer</div></div>
+      </div>
+      <div class="side">
+        <div class="side-ttl">Status</div>
+        <div class="k-status" id="kSt">Wähle einen Startpunkt</div>
+        <div class="k-cnt" id="kCnt">Überquert: 0 / 7</div>
+        <div class="k-rule">Eulers Erkenntnis: Ein Eulerweg existiert nur, wenn <strong>höchstens 2 Knoten</strong> einen ungeraden Grad besitzen.<br><br>Beim Königsberger Problem haben <strong>alle 4 Landmassen</strong> ungeraden Grad — strukturell unlösbar.</div>
+        <button class="btn" onclick="resetK()">↺ Zurücksetzen</button>
+        <button class="btn orange" onclick="showKSol()">Struktur offenlegen</button>
+      </div>
+    </div>
+    <div class="pull" style="margin-top:38px;"><p>Für Management, Märkte und Organisationen: Gute Entscheidungen setzen voraus, dass wir Probleme zuerst als Strukturprobleme erkennen — nicht vorschnell als Fehlverhalten einzelner Akteure.</p></div>
+  </div>
+</section>
+
+<!-- 02 METRIKEN -->
+<section id="metriken" class="ch ch-a">
+  <div class="ch-ghost">02</div>
+  <div class="ch-inner">
+    <div class="ch-hd">
+      <div class="ch-num">02</div>
+      <div>
+        <div class="ch-title">Drei Metriken, die überraschend viel erklären</div>
+        <div class="ch-sub">Klicke einen Knoten an — die gewählte Metrik wird sofort berechnet und visuell hervorgehoben.</div>
+      </div>
+    </div>
+    <div class="two-col-w">
+      <div>
+        <div class="cv-box"><canvas id="mCanvas" height="360"></canvas><div class="cv-lbl">Knoten anklicken · Metrik links wählen</div></div>
+      </div>
+      <div>
+        <div class="m-item active" id="mi-grad" onclick="setMet('grad')">
+          <div class="m-tag">Metrik 01</div><div class="m-name">Grad</div>
+          <div class="m-val" id="mv-grad">—</div>
+          <div class="m-def">Direkte Verbindungen → Sichtbarkeit & Reichweite</div>
+        </div>
+        <div class="m-item" id="mi-path" onclick="setMet('path')">
+          <div class="m-tag">Metrik 02</div><div class="m-name">Ø Pfadlänge</div>
+          <div class="m-val" id="mv-path">—</div>
+          <div class="m-def">Mittlere Schritte zu allen Knoten → Diffusionsgeschwindigkeit</div>
+        </div>
+        <div class="m-item" id="mi-clust" onclick="setMet('clust')">
+          <div class="m-tag">Metrik 03</div><div class="m-name">Clustering-K.</div>
+          <div class="m-val" id="mv-clust">—</div>
+          <div class="m-def">Verbindungsquote der Nachbarn → Vertrauen vs. Silo-Risiko</div>
+        </div>
+        <div style="margin-top:18px;padding:13px;background:var(--bg);border:1px solid var(--border);border-radius:4px;font-size:.79rem;color:var(--muted);line-height:1.6">
+          <strong style="color:var(--text)">Merksatz:</strong> Netzwerkanalyse übersetzt Struktur in Reichweite, Geschwindigkeit und Zusammenhalt — sie ist keine Theorie, sondern ein Strategieinstrument.
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 03 SMALL WORLD -->
+<section id="smallworld" class="ch ch-c">
+  <div class="ch-ghost">03</div>
+  <div class="ch-inner">
+    <div class="ch-hd">
+      <div class="ch-num">03</div>
+      <div>
+        <div class="ch-title">Small-World-Netzwerke</div>
+        <div class="ch-sub">Bewege den Schieberegler und beobachte, wie kurze Pfade bei hoher Clusterdichte entstehen — das Paradox des Small World (Watts &amp; Strogatz, 1998).</div>
+      </div>
+    </div>
+    <div class="sw-grid">
+      <div class="sw-box">
+        <div class="sw-head"><div class="sw-tag">Ring-Lattice · p = 0</div><div class="sw-ttl">Nur lokale Cluster</div></div>
+        <canvas id="swC0" height="195"></canvas>
+        <div class="sw-stats"><div><div class="sw-sv" id="sw0p">—</div><div class="sw-sl">Ø Pfadlänge</div></div><div><div class="sw-sv" id="sw0c">—</div><div class="sw-sl">Clustering</div></div></div>
+      </div>
+      <div class="sw-box">
+        <div class="sw-head"><div class="sw-tag" id="sw1tag">Small World · p = 0.10</div><div class="sw-ttl">Cluster + kurze Pfade</div></div>
+        <canvas id="swC1" height="195"></canvas>
+        <div class="sw-stats"><div><div class="sw-sv" id="sw1p">—</div><div class="sw-sl">Ø Pfadlänge</div></div><div><div class="sw-sv" id="sw1c">—</div><div class="sw-sl">Clustering</div></div></div>
+      </div>
+    </div>
+    <div class="slider-row"><label>Rewiring-Wahrscheinlichkeit p <span id="swpv">0.10</span></label><input type="range" id="swSl" min="0" max="0.5" step="0.01" value="0.10"></div>
+    <div class="card-grid">
+      <div class="card"><div class="card-tag">Empirisch</div><div class="card-title">4,74 Schritte</div><div class="card-body">Mittlere Distanz in großen Online-Netzwerken (Backstrom et al., 2012). Wenige Zwischenstationen reichen für globale Verbreitung.</div></div>
+      <div class="card orange"><div class="card-tag">Strategisch</div><div class="card-title">Reichweite ≠ Größe</div><div class="card-body">Wirkung entsteht nicht allein aus Masse, sondern aus Dichte, Brücken und kurzen Pfaden. Struktur ist der entscheidende Hebel.</div></div>
+      <div class="card blue"><div class="card-tag">Risiko</div><div class="card-title">Netzwerkdesign = Risikodesign</div><div class="card-body">Kurze Wege beschleunigen beides: Kooperation und Eskalation. Jede Designentscheidung ist auch eine Risikoentscheidung.</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- 04 CROWDS -->
+<section id="crowds" class="ch ch-b">
+  <div class="ch-ghost">04</div>
+  <div class="ch-inner">
+    <div class="ch-hd">
+      <div class="ch-num">04</div>
+      <div>
+        <div class="ch-title">Wenn die Menge kippt</div>
+        <div class="ch-sub">Das Schelling-Modell: Schon moderate lokale Präferenzen erzeugen vollständige kollektive Segregation. Stelle die Toleranzschwelle ein und starte.</div>
+      </div>
+    </div>
+    <div class="two-col">
+      <div>
+        <div class="cv-box"><canvas id="segCanvas" height="360"></canvas><div class="cv-lbl">Jede Zelle = ein Akteur · Farbe = Gruppe · Dunkel = leer</div></div>
+      </div>
+      <div class="seg-ctrl">
+        <div class="seg-ctrl-ttl">Simulation</div>
+        <div class="seg-stats">
+          <div class="ss"><div class="ss-v" id="ssH">—</div><div class="ss-l">% Zufrieden</div></div>
+          <div class="ss"><div class="ss-v" id="ssR">0</div><div class="ss-l">Runden</div></div>
+        </div>
+        <div class="ctrl-grp"><label>Toleranzschwelle <span id="stv">30%</span></label><input type="range" id="segT" min="10" max="90" step="5" value="30"></div>
+        <div class="ctrl-grp"><label>Leerstand <span id="sev">15%</span></label><input type="range" id="segE" min="5" max="40" step="5" value="15"></div>
+        <button class="btn primary" id="segBtn" onclick="toggleSeg()">▶ Starten</button>
+        <button class="btn" onclick="resetSeg()" style="margin-top:8px">↺ Neu initialisieren</button>
+        <div class="insight" style="margin-top:14px"><strong>Kontraintuitiv:</strong> Eine Toleranzschwelle von 30 % — nur 3 von 10 Nachbarn müssen gleich sein — genügt für vollständige Segregation. Nicht Extremismus, sondern Moderation erzeugt die Trennung.</div>
+      </div>
+    </div>
+    <div class="pull" style="margin-top:36px;"><p>Schon kleine lokale Präferenzen können große kollektive Dynamiken auslösen. Netzwerkökonomie muss daher immer auch Systemstruktur beachten.</p></div>
+  </div>
+</section>
+
+<!-- 05 TRANSFER -->
+<section id="transfer" class="ch ch-a">
+  <div class="ch-ghost">05</div>
+  <div class="ch-inner">
+    <div class="ch-hd">
+      <div class="ch-num">05</div>
+      <div>
+        <div class="ch-title">Transfer über fünf Domänen</div>
+        <div class="ch-sub">Netzwerke erklären weit mehr als Social Media. Klicke eine Domäne für Analyse und strategischen Nutzen.</div>
+      </div>
+    </div>
+    <div class="domains" id="domGrid">
+      <div class="dtile" id="dt0" onclick="openD(0)"><div class="di-icon">📡</div><div class="di-title">Streaming</div><div class="di-sub">Infrastruktur</div></div>
+      <div class="dtile" id="dt1" onclick="openD(1)"><div class="di-icon">🧬</div><div class="di-title">Gesundheit</div><div class="di-sub">Epidemiologie</div></div>
+      <div class="dtile" id="dt2" onclick="openD(2)"><div class="di-icon">🌐</div><div class="di-title">Welthandel</div><div class="di-sub">Lieferketten</div></div>
+      <div class="dtile" id="dt3" onclick="openD(3)"><div class="di-icon">🚇</div><div class="di-title">Mobilität</div><div class="di-sub">Robustheit</div></div>
+      <div class="dtile" id="dt4" onclick="openD(4)"><div class="di-icon">🏢</div><div class="di-title">Organisation</div><div class="di-sub">Informelle Netze</div></div>
+    </div>
+    <div class="ddetail" id="dDet"></div>
+    <div class="istrip">
+      <div class="ibox"><div class="ibox-ic">↗ Marketing</div><div class="ibox-t">Struktur schlägt Reichweite</div><div class="ibox-b">Viele Kontakte sind kein Hebel. Wirkung braucht anschlussfähige Knoten und Brücken zu neuen Segmenten.</div></div>
+      <div class="ibox"><div class="ibox-ic">⚖ Management</div><div class="ibox-t">Dichte erzeugt Silos</div><div class="ibox-b">Stark vernetzte Teams handeln schnell, riskieren aber Übersteuerung. Führung muss gezielte Brücken bauen.</div></div>
+      <div class="ibox"><div class="ibox-ic">◈ Plattformen</div><div class="ibox-t">Wachstum kuratieren</div><div class="ibox-b">Skalierung bringt Effekte, aber auch Spam und Qualitätsverlust. Wachstum gestalten, nicht maximieren.</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- 06 WORKSHOP -->
+<section id="workshop" class="ch ch-c">
+  <div class="ch-ghost">06</div>
+  <div class="ch-inner">
+    <div class="ch-hd">
+      <div class="ch-num">06</div>
+      <div>
+        <div class="ch-title">Zeichne dein Netzwerkproblem</div>
+        <div class="ch-sub">Übersetze ein reales System in Knoten, Kanten, Hubs (★) und Brücken (⌇). Formuliere dann das Risiko und den strategischen Hebel.</div>
+      </div>
+    </div>
+    <div class="ws-wrap">
+      <div class="ws-bar">
+        <button class="ws-btn active" id="wbnode" onclick="setWM('node')">⬤ Knoten</button>
+        <button class="ws-btn" id="wbedge" onclick="setWM('edge')">— Kante</button>
+        <button class="ws-btn" id="wbhub" onclick="setWM('hub')">★ Hub</button>
+        <button class="ws-btn" id="wbbridge" onclick="setWM('bridge')">⌇ Brücke</button>
+        <button class="ws-btn del" id="wbdelete" onclick="setWM('delete')">✕ Löschen</button>
+        <button class="ws-btn del" onclick="clearWS()" style="margin-left:auto">⊘ Alles löschen</button>
+      </div>
+      <canvas id="wsCanvas" height="400"></canvas>
+      <div class="ws-info-bar" id="wsInfo">Leitfrage: Wer sind die Knoten — und welche Beziehung zählt hier als Kante?</div>
+    </div>
+    <div class="card-grid" style="margin-top:22px">
+      <div class="card"><div class="card-tag">Phase 1</div><div class="card-title">System wählen</div><div class="card-body">Kursgruppe, Unternehmen, Lieferkette oder Community. Fokus: Beziehungen, nicht Namen.</div></div>
+      <div class="card orange"><div class="card-tag">Phase 2</div><div class="card-title">Struktur markieren</div><div class="card-body">Hubs, Brücken, dichte Cluster und isolierte Bereiche markieren. Metriken: Grad und Clustering.</div></div>
+      <div class="card blue"><div class="card-tag">Phase 3</div><div class="card-title">Risiko & Hebel</div><div class="card-body">Risiko formulieren (Isolation, Überlastung, Echo) und einen konkreten Hebel ableiten.</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- 07 AUSBLICK -->
+<section id="ausblick" class="ch ch-b">
+  <div class="ch-ghost">07</div>
+  <div class="ch-inner">
+    <div class="ch-hd">
+      <div class="ch-num">07</div>
+      <div>
+        <div class="ch-title">Session 2: Wann wird Wachstum zu Wert?</div>
+        <div class="ch-sub">Session 1 zeigt, wie Struktur Verhalten formt. Session 2 erklärt, wie Struktur ökonomischen Wert, Macht und Verwundbarkeit hervorbringt.</div>
+      </div>
+    </div>
+    <div class="ab-grid">
+      <div class="ab-card"><div class="ab-tag">01 · Nächste Session</div><div class="ab-title">Netzwerkeffekte</div><div class="ab-body">Wert steigt nicht linear. Wie entsteht zusätzlicher Nutzen — und warum bringt nicht jedes Wachstum ökonomische Qualität?</div></div>
+      <div class="ab-card"><div class="ab-tag">02 · Nächste Session</div><div class="ab-title">Plattformökonomie</div><div class="ab-body">Warum manche Märkte extrem skalieren. Plattformen koppeln Gruppen, senken Suchkosten und verstärken Interaktionen — Marktmacht entsteht.</div></div>
+      <div class="ab-card"><div class="ab-tag">03 · Nächste Session</div><div class="ab-title">Kaltstart & kritische Masse</div><div class="ab-body">Warum gute Ideen oft scheitern, solange zu wenige Knoten aktiv sind — und welche Strategien helfen, das Momentum zu erzeugen.</div></div>
+      <div class="ab-card"><div class="ab-tag">04 · Nächste Session</div><div class="ab-title">Negative Netzwerkeffekte</div><div class="ab-body">Mehr Nutzer:innen können Reibung, Spam und Qualitätsverlust erzeugen. Wann kippt Wachstum — und wie schützt man sich?</div></div>
+    </div>
+    <div class="pull" style="margin-top:36px;"><p>Netzwerkökonomie beginnt mit einer einfachen Verschiebung des Blicks: weg vom isolierten Akteur, hin zur Struktur der Beziehungen, die Reichweite, Macht und Wert überhaupt erst entstehen lässt.</p></div>
+  </div>
+</section>
+
+<!-- QUIZ -->
+<section id="quiz">
+  <div class="qwrap">
+    <h2>Wissen testen</h2>
+    <div class="q-sub">15 Fragen · Session 1 &amp; 2 · Netzwerkökonomie</div>
+
+    <!-- Name Gate -->
+    <div id="qGate" class="q-gate">
+      <p>Geben Sie Ihren Namen ein — Ihr Ergebnis wird gespeichert<br>und Sie erhalten ein digitales Erfolgstoken.</p>
+      <input class="q-name-input" id="qName" type="text" placeholder="Ihr Name oder Kürzel …" maxlength="40"
+        onkeydown="if(event.key==='Enter')startQ()">
+      <button class="btn primary" onclick="startQ()" style="width:auto;padding:11px 28px;margin:0 auto">Quiz starten →</button>
+    </div>
+
+    <!-- Questions -->
+    <div id="qMain" style="display:none">
+      <div class="qprog"><div class="qpbar"><div class="qpfill" id="qfill"></div></div><div class="qpcnt" id="qcnt">1 / 15</div></div>
+      <div id="qbody"></div>
+    </div>
+
+    <!-- Result + Token -->
+    <div class="qres" id="qres">
+      <div class="qres-num" id="qrn"></div>
+      <div class="qres-lbl">von 15 Fragen richtig</div>
+      <div class="qres-msg" id="qrm"></div>
+      <div class="token-wrap" id="tokenWrap"></div>
+      <div class="token-actions">
+        <button class="btn primary" onclick="downloadToken()" style="width:auto;padding:10px 24px">Token herunterladen</button>
+        <button class="btn" onclick="restartQ()" style="width:auto;padding:10px 20px">↺ Nochmals</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>An explorable designed by Prof. Thomas Petzold Ph.D. and Claude · Media University of Applied Sciences · 2026</footer>
+
+<script>
+// ── NAV OBSERVER ──
+const secIds=['hero','koenig','metriken','smallworld','crowds','transfer','workshop','ausblick','quiz'];
+const navAs=document.querySelectorAll('.nav-a');
+secIds.forEach(id=>{
+  const el=document.getElementById(id);if(!el)return;
+  new IntersectionObserver(es=>{if(es[0].isIntersecting){navAs.forEach(a=>a.classList.remove('active'));const i=secIds.indexOf(id);if(i>=0&&navAs[i])navAs[i].classList.add('active');}},{threshold:.25}).observe(el);
+});
+
+// ── HERO CANVAS ──
+(function(){
+  const cv=document.getElementById('heroCanvas'),ctx=cv.getContext('2d');
+  let ns=[];
+  function init(){cv.width=cv.offsetWidth;cv.height=cv.offsetHeight;ns=Array.from({length:Math.min(42,Math.floor(cv.width/16))},()=>({x:Math.random()*cv.width,y:Math.random()*cv.height,vx:(Math.random()-.5)*.33,vy:(Math.random()-.5)*.33,r:2+Math.random()*4}));}
+  function draw(){const W=cv.width,H=cv.height;ctx.clearRect(0,0,W,H);ctx.fillStyle='#0e1a22';ctx.fillRect(0,0,W,H);ns.forEach(n=>{n.x+=n.vx;n.y+=n.vy;if(n.x<0||n.x>W)n.vx*=-1;if(n.y<0||n.y>H)n.vy*=-1;});for(let i=0;i<ns.length;i++)for(let j=i+1;j<ns.length;j++){const dx=ns[i].x-ns[j].x,dy=ns[i].y-ns[j].y,d=Math.sqrt(dx*dx+dy*dy);if(d<115){ctx.beginPath();ctx.moveTo(ns[i].x,ns[i].y);ctx.lineTo(ns[j].x,ns[j].y);ctx.strokeStyle=`rgba(15,184,204,${(1-d/115)*.33})`;ctx.lineWidth=.8;ctx.stroke();}}ns.forEach((n,i)=>{ctx.beginPath();ctx.arc(n.x,n.y,n.r,0,Math.PI*2);ctx.fillStyle=i%6===0?'#e8732a':'rgba(15,184,204,.7)';ctx.fill();});requestAnimationFrame(draw);}
+  init();draw();window.addEventListener('resize',init);
+})();
+// counter
+let cnt=false;new IntersectionObserver(es=>{if(es[0].isIntersecting&&!cnt){cnt=true;document.querySelectorAll('[data-count]').forEach(el=>{const t=parseFloat(el.dataset.count),dec=el.dataset.dec?parseInt(el.dataset.dec):0;let c=0,s=55,inc=t/s;const ti=setInterval(()=>{c=Math.min(c+inc,t);el.textContent=dec?c.toFixed(dec):Math.round(c).toLocaleString('de');if(c>=t)clearInterval(ti);},22);});}},{threshold:.5}).observe(document.getElementById('hero'));
+
+// ── KÖNIGSBERG ──
+const kC=document.getElementById('kCanvas'),kX=kC.getContext('2d');
+let kSt={sel:null,crossed:[],sol:false};
+function kG(){const W=kC.width,H=kC.height;const L=[{id:0,x:W*.5,y:H*.5,r:44,l:'Insel',deg:4},{id:1,x:W*.18,y:H*.5,r:30,l:'West',deg:3},{id:2,x:W*.82,y:H*.5,r:30,l:'Ost',deg:3},{id:3,x:W*.5,y:H*.14,r:27,l:'Nord',deg:3}];const B=[{id:0,a:1,b:0,cx:W*.32,cy:H*.36},{id:1,a:1,b:0,cx:W*.32,cy:H*.64},{id:2,a:2,b:0,cx:W*.68,cy:H*.36},{id:3,a:2,b:0,cx:W*.68,cy:H*.64},{id:4,a:3,b:0,cx:W*.5,cy:H*.31},{id:5,a:3,b:1,cx:W*.28,cy:H*.24},{id:6,a:3,b:2,cx:W*.72,cy:H*.24}];return{L,B};}
+function drawK(){if(!kC.width)return;const W=kC.width,H=kC.height,{L,B}=kG();kX.clearRect(0,0,W,H);kX.fillStyle='#0a1520';kX.fillRect(0,0,W,H);const g=kX.createRadialGradient(W/2,H/2,0,W/2,H/2,W*.6);g.addColorStop(0,'rgba(15,184,204,.055)');g.addColorStop(1,'transparent');kX.fillStyle=g;kX.fillRect(0,0,W,H);
+B.forEach(b=>{const la=L[b.a],lb=L[b.b],cr=kSt.crossed.includes(b.id);kX.beginPath();kX.moveTo(la.x,la.y);kX.lineTo(lb.x,lb.y);kX.strokeStyle=cr?'rgba(232,115,42,.2)':'rgba(15,184,204,.12)';kX.lineWidth=1.5;kX.stroke();const dx=lb.x-la.x,dy=lb.y-la.y;kX.save();kX.translate(b.cx,b.cy);kX.rotate(Math.atan2(dy,dx));const bw=28,bh=10;kX.fillStyle=cr?'rgba(90,20,5,.85)':'rgba(8,38,55,.9)';kX.strokeStyle=cr?'#e8732a':kSt.sol?'rgba(232,115,42,.5)':'rgba(15,184,204,.55)';kX.lineWidth=1.5;kX.fillRect(-bw/2,-bh/2,bw,bh);kX.strokeRect(-bw/2,-bh/2,bw,bh);if(cr){kX.strokeStyle='#e8732a';kX.lineWidth=1.5;kX.beginPath();kX.moveTo(-bw/2,-bh/2);kX.lineTo(bw/2,bh/2);kX.moveTo(bw/2,-bh/2);kX.lineTo(-bw/2,bh/2);kX.stroke();}kX.fillStyle=cr?'rgba(232,115,42,.65)':'rgba(15,184,204,.75)';kX.font='8px DM Mono,monospace';kX.textAlign='center';kX.textBaseline='middle';kX.fillText(b.id+1,0,0);kX.restore();});
+L.forEach(l=>{const is=kSt.sel===l.id;if(is){const g=kX.createRadialGradient(l.x,l.y,0,l.x,l.y,l.r*2.2);g.addColorStop(0,'rgba(15,184,204,.18)');g.addColorStop(1,'transparent');kX.fillStyle=g;kX.beginPath();kX.arc(l.x,l.y,l.r*2.2,0,Math.PI*2);kX.fill();}kX.beginPath();kX.arc(l.x,l.y,l.r,0,Math.PI*2);kX.fillStyle=is?'#0e3f50':'#0b2a38';kX.fill();kX.strokeStyle=is?'#0fb8cc':'rgba(15,184,204,.38)';kX.lineWidth=is?2:1;kX.stroke();kX.fillStyle='#d8e8ee';kX.font='bold 11px Playfair Display,serif';kX.textAlign='center';kX.textBaseline='middle';kX.fillText(l.l,l.x,l.y-5);kX.fillStyle='rgba(216,232,238,.4)';kX.font='8px DM Mono';kX.fillText(`Grad ${l.deg}`,l.x,l.y+8);});}
+function rK(){kC.width=kC.offsetWidth;kC.height=340;drawK();}
+kC.addEventListener('click',e=>{const r=kC.getBoundingClientRect(),mx=(e.clientX-r.left)*(kC.width/r.width),my=(e.clientY-r.top)*(kC.height/r.height),{L,B}=kG();for(const b of B){if(kSt.crossed.includes(b.id))continue;if(Math.sqrt((mx-b.cx)**2+(my-b.cy)**2)<18){if(kSt.sel===b.a||kSt.sel===b.b){kSt.crossed.push(b.id);kSt.sel=kSt.sel===b.a?b.b:b.a;const s=document.getElementById('kSt');if(kSt.crossed.length===7){s.textContent='✓ Alle 7 Brücken überquert!';s.className='k-status ok';}else{s.textContent=`Brücke ${b.id+1} überquert — weiter.`;s.className='k-status';}document.getElementById('kCnt').textContent=`Überquert: ${kSt.crossed.length} / 7`;drawK();return;}}}for(const l of L){if(Math.sqrt((mx-l.x)**2+(my-l.y)**2)<l.r){kSt.sel=l.id;const s=document.getElementById('kSt');s.textContent=`${l.l} gewählt — überquere eine Brücke.`;s.className='k-status';drawK();return;}}});
+function resetK(){kSt={sel:null,crossed:[],sol:false};const s=document.getElementById('kSt');s.textContent='Wähle einen Startpunkt';s.className='k-status';document.getElementById('kCnt').textContent='Überquert: 0 / 7';drawK();}
+function showKSol(){kSt.sol=!kSt.sol;const s=document.getElementById('kSt');if(kSt.sol){s.textContent='Strukturell unlösbar: alle 4 Knoten haben ungeraden Grad.';s.className='k-status bad';}else{s.textContent='Wähle einen Startpunkt';s.className='k-status';}drawK();}
+window.addEventListener('resize',rK);setTimeout(rK,80);
+
+// ── METRIKEN ──
+const mC=document.getElementById('mCanvas'),mX=mC.getContext('2d');
+let mN=[],mE=[],mSel=null,mMet='grad';
+function buildMG(){mC.width=mC.offsetWidth;mC.height=360;const W=mC.width,H=mC.height;const pos=[[W*.5,H*.5],[W*.5,H*.18],[W*.2,H*.37],[W*.8,H*.32],[W*.72,H*.72],[W*.3,H*.74],[W*.14,H*.67],[W*.85,H*.72],[W*.5,H*.84],[W*.68,H*.18]];mN=pos.map((p,i)=>({id:i,x:p[0],y:p[1]}));mE=[[0,1],[0,2],[0,3],[0,4],[0,5],[0,8],[1,9],[1,3],[2,5],[2,6],[3,9],[3,4],[4,8],[4,7],[5,6],[5,8],[7,8],[7,4]];}
+function mDeg(id){return mE.filter(e=>e[0]===id||e[1]===id).length;}
+function mPath(id){const d={[id]:0},q=[id];while(q.length){const c=q.shift();mE.forEach(e=>{const n=e[0]===c?e[1]:e[1]===c?e[0]:-1;if(n>=0&&d[n]===undefined){d[n]=d[c]+1;q.push(n);}});}const v=Object.values(d);return(v.reduce((a,b)=>a+b,0)/(v.length-1)).toFixed(2);}
+function mClust(id){const nb=[];mE.forEach(e=>{if(e[0]===id)nb.push(e[1]);else if(e[1]===id)nb.push(e[0]);});if(nb.length<2)return'0.00';let L=0;for(let i=0;i<nb.length;i++)for(let j=i+1;j<nb.length;j++)if(mE.some(e=>(e[0]===nb[i]&&e[1]===nb[j])||(e[0]===nb[j]&&e[1]===nb[i])))L++;return(L/(nb.length*(nb.length-1)/2)).toFixed(2);}
+function setMet(m){mMet=m;['grad','path','clust'].forEach(x=>{document.getElementById('mi-'+x).classList.toggle('active',x===m);});updM();drawM();}
+function updM(){if(mSel===null){['grad','path','clust'].forEach(x=>document.getElementById('mv-'+x).textContent='—');return;}document.getElementById('mv-grad').textContent=mDeg(mSel);document.getElementById('mv-path').textContent=mPath(mSel);document.getElementById('mv-clust').textContent=mClust(mSel);}
+function drawM(){if(!mC.width)return;const W=mC.width,H=mC.height;mX.clearRect(0,0,W,H);mX.fillStyle='#0a1520';mX.fillRect(0,0,W,H);let nc={};
+if(mSel!==null){if(mMet==='grad'){nc[mSel]='#0fb8cc';mE.forEach(e=>{if(e[0]===mSel)nc[e[1]]='#e8732a';if(e[1]===mSel)nc[e[0]]='#e8732a';});}if(mMet==='path'){const d={[mSel]:0},q=[mSel];while(q.length){const c=q.shift();mE.forEach(e=>{const n=e[0]===c?e[1]:e[1]===c?e[0]:-1;if(n>=0&&d[n]===undefined){d[n]=d[c]+1;q.push(n);}});}const mx=Math.max(...Object.values(d));mN.forEach(n=>{if(d[n.id]!==undefined)nc[n.id]=n.id===mSel?'#0fb8cc':`hsl(${185-d[n.id]/mx*140},72%,${60-d[n.id]/mx*20}%)`});}if(mMet==='clust'){const nb=[];mE.forEach(e=>{if(e[0]===mSel)nb.push(e[1]);else if(e[1]===mSel)nb.push(e[0]);});nc[mSel]='#0fb8cc';nb.forEach(n=>nc[n]='#e8732a');}}
+mE.forEach(([a,b])=>{const na=mN[a],nb=mN[b],hi=mSel!==null&&(a===mSel||b===mSel||(mMet==='clust'&&nc[a]&&nc[b]));mX.beginPath();mX.moveTo(na.x,na.y);mX.lineTo(nb.x,nb.y);mX.strokeStyle=hi?'rgba(15,184,204,.52)':'rgba(255,255,255,.055)';mX.lineWidth=hi?1.5:1;mX.stroke();});
+mN.forEach(n=>{const is=n.id===mSel,col=nc[n.id]||'rgba(15,184,204,.4)',r=is?12:7;if(is){const g=mX.createRadialGradient(n.x,n.y,0,n.x,n.y,24);g.addColorStop(0,'rgba(15,184,204,.2)');g.addColorStop(1,'transparent');mX.fillStyle=g;mX.beginPath();mX.arc(n.x,n.y,24,0,Math.PI*2);mX.fill();}mX.beginPath();mX.arc(n.x,n.y,r,0,Math.PI*2);mX.fillStyle=col;mX.fill();mX.fillStyle='rgba(216,232,238,.38)';mX.font='8px DM Mono';mX.textAlign='center';mX.textBaseline='bottom';mX.fillText(mDeg(n.id),n.x,n.y-r-2);});}
+mC.addEventListener('click',e=>{const r=mC.getBoundingClientRect(),mx=(e.clientX-r.left)*(mC.width/r.width),my=(e.clientY-r.top)*(mC.height/r.height);let h=null;mN.forEach(n=>{if(Math.sqrt((mx-n.x)**2+(my-n.y)**2)<18)h=n.id;});mSel=h;updM();drawM();});
+buildMG();drawM();window.addEventListener('resize',()=>{buildMG();drawM();});
+
+// ── SMALL WORLD ──
+function buildWS(N,K,p,seed){const sr=(s=>()=>{s=(s*1664525+1013904223)&0xffffffff;return(s>>>0)/0xffffffff;})(seed);const adj=Array.from({length:N},()=>new Set());for(let i=0;i<N;i++)for(let k=1;k<=K/2;k++){const j=(i+k)%N;adj[i].add(j);adj[j].add(i);}const edges=[];for(let i=0;i<N;i++)for(let k=1;k<=K/2;k++){const j=(i+k)%N;if(sr()<p){adj[i].delete(j);adj[j].delete(i);let nj=Math.floor(sr()*N),a=0;while((nj===i||adj[i].has(nj))&&a++<20)nj=Math.floor(sr()*N);adj[i].add(nj);adj[nj].add(i);edges.push([i,nj]);}else edges.push([i,j]);}return{adj,edges};}
+function swP(adj,N){let t=0,c=0;const S=Math.min(N,12);for(let s=0;s<S;s++){const d=new Array(N).fill(Infinity);d[s]=0;const q=[s];while(q.length){const cur=q.shift();adj[cur].forEach(n=>{if(d[n]===Infinity){d[n]=d[cur]+1;q.push(n);}});}d.forEach((v,i)=>{if(i!==s&&v!==Infinity){t+=v;c++;}});}return c?(t/c).toFixed(2):'∞';}
+function swC(adj,N){let s=0;for(let i=0;i<N;i++){const nb=[...adj[i]];if(nb.length<2)continue;let L=0;for(let a=0;a<nb.length;a++)for(let b=a+1;b<nb.length;b++)if(adj[nb[a]].has(nb[b]))L++;s+=2*L/(nb.length*(nb.length-1));}return(s/N).toFixed(3);}
+function drawSW(cid,N,adj,edges){const cv=document.getElementById(cid);cv.width=cv.offsetWidth;const W=cv.width,H=cv.height,ctx=cv.getContext('2d');ctx.clearRect(0,0,W,H);ctx.fillStyle='#0a1520';ctx.fillRect(0,0,W,H);const cx=W/2,cy=H/2,R=Math.min(W,H)*.4;const pos=Array.from({length:N},(_,i)=>({x:cx+R*Math.cos((i/N)*2*Math.PI-Math.PI/2),y:cy+R*Math.sin((i/N)*2*Math.PI-Math.PI/2)}));edges.forEach(([a,b])=>{const isL=Math.abs(a-b)>N/4&&Math.abs(a-b)<N*3/4;ctx.beginPath();ctx.moveTo(pos[a].x,pos[a].y);ctx.lineTo(pos[b].x,pos[b].y);ctx.strokeStyle=isL?'rgba(232,115,42,.62)':'rgba(15,184,204,.17)';ctx.lineWidth=isL?1.2:.75;ctx.stroke();});pos.forEach(p=>{ctx.beginPath();ctx.arc(p.x,p.y,3,0,Math.PI*2);ctx.fillStyle='rgba(15,184,204,.72)';ctx.fill();});}
+function refSW(p){const N=30,K=4,w0=buildWS(N,K,0,1),w1=buildWS(N,K,p,77);drawSW('swC0',N,w0.adj,w0.edges);drawSW('swC1',N,w1.adj,w1.edges);document.getElementById('sw0p').textContent=swP(w0.adj,N);document.getElementById('sw0c').textContent=swC(w0.adj,N);document.getElementById('sw1p').textContent=swP(w1.adj,N);document.getElementById('sw1c').textContent=swC(w1.adj,N);document.getElementById('sw1tag').textContent=`Small World · p = ${p.toFixed(2)}`;document.getElementById('swpv').textContent=p.toFixed(2);}
+document.getElementById('swSl').addEventListener('input',e=>refSW(parseFloat(e.target.value)));
+setTimeout(()=>refSW(0.1),120);window.addEventListener('resize',()=>refSW(parseFloat(document.getElementById('swSl').value)));
+
+// ── SCHELLING ──
+const sC=document.getElementById('segCanvas'),sX=sC.getContext('2d');
+const G=30;let sGrid=[],sRun=false,sInt=null,sRnds=0;
+function sRz(){sC.width=sC.offsetWidth;sC.height=Math.min(360,sC.width);drawSeg();}
+function gT(){return parseInt(document.getElementById('segT').value)/100;}
+function gE(){return parseInt(document.getElementById('segE').value)/100;}
+document.getElementById('segT').addEventListener('input',e=>document.getElementById('stv').textContent=e.target.value+'%');
+document.getElementById('segE').addEventListener('input',e=>{document.getElementById('sev').textContent=e.target.value+'%';resetSeg();});
+function resetSeg(){clearInterval(sInt);sRun=false;sRnds=0;document.getElementById('segBtn').textContent='▶ Starten';const em=gE();sGrid=[];for(let r=0;r<G;r++){sGrid[r]=[];for(let c=0;c<G;c++){const v=Math.random();sGrid[r][c]=v<em?0:v<em+(1-em)*.5?1:2;}}drawSeg();updSS();}
+function drawSeg(){if(!sC.width||!sGrid.length||!sGrid[0])return;const W=sC.width,H=sC.height,cw=W/G,ch=H/G;sX.clearRect(0,0,W,H);for(let r=0;r<G;r++)for(let c=0;c<G;c++){const v=sGrid[r][c];sX.fillStyle=v===0?'#0a1520':v===1?'#0c6a7c':'#7a3012';sX.fillRect(c*cw+.5,r*ch+.5,cw-1,ch-1);}}
+function segStep(){const t=gT();let mv=false;const emp=[];for(let r=0;r<G;r++)for(let c=0;c<G;c++)if(!sGrid[r][c])emp.push([r,c]);for(let r=0;r<G;r++)for(let c=0;c<G;c++){const v=sGrid[r][c];if(!v)continue;let same=0,tot=0;for(let dr=-1;dr<=1;dr++)for(let dc=-1;dc<=1;dc++){if(!dr&&!dc)continue;const nr=r+dr,nc=c+dc;if(nr>=0&&nr<G&&nc>=0&&nc<G&&sGrid[nr][nc]){tot++;if(sGrid[nr][nc]===v)same++;}}const h=tot===0||same/tot>=t;if(!h&&emp.length){const idx=Math.floor(Math.random()*emp.length);const[er,ec]=emp[idx];sGrid[er][ec]=v;sGrid[r][c]=0;emp[idx]=[r,c];mv=true;}}sRnds++;drawSeg();updSS();if(!mv){clearInterval(sInt);sRun=false;document.getElementById('segBtn').textContent='▶ Erneut';}}
+function updSS(){const t=gT();let h=0,tot=0;for(let r=0;r<G;r++)for(let c=0;c<G;c++){const v=sGrid[r][c];if(!v)continue;tot++;let same=0,nb=0;for(let dr=-1;dr<=1;dr++)for(let dc=-1;dc<=1;dc++){if(!dr&&!dc)continue;const nr=r+dr,nc=c+dc;if(nr>=0&&nr<G&&nc>=0&&nc<G&&sGrid[nr][nc]){nb++;if(sGrid[nr][nc]===v)same++;}}if(nb===0||same/nb>=t)h++;}document.getElementById('ssH').textContent=tot?Math.round(h/tot*100)+'%':'—';document.getElementById('ssR').textContent=sRnds;}
+function toggleSeg(){if(sRun){clearInterval(sInt);sRun=false;document.getElementById('segBtn').textContent='▶ Fortsetzen';}else{sRun=true;document.getElementById('segBtn').textContent='⏸ Pausieren';sInt=setInterval(segStep,110);}}
+sRz();resetSeg();window.addEventListener('resize',()=>{sRz();drawSeg();});
+
+// ── TRANSFER DOMAINS ──
+const DOMS=[
+  {e:'📡',t:'Streaming & Infrastruktur',b:'Inhalte zirkulieren über Server und Wege. Qualität ist eine Frage von Latenz und Lastverteilung. Netzwerkanalyse zeigt, wo Engpässe entstehen und welche Knoten für Reichweite kritisch sind.',tags:['CDN-Routing','Lastverteilung','Latenzoptimierung','Engpassanalyse']},
+  {e:'🧬',t:'Gesundheit & Epidemiologie',b:'Erkrankungen teilen oft Verbindungen statt isolierter Ursachen. Netzwerkanalyse hilft, Risikoketten und systemische Interventionspunkte zu erkennen — von Infektionskrankheiten bis zu genetischen Krankheitsnetzen.',tags:['Übertragungsnetze','R₀-Wert','Kontakttracing','Krankheitscluster']},
+  {e:'🌐',t:'Welthandel & Lieferketten',b:'Welthandel ist ein Geflecht aus Lieferbeziehungen und Spezialisierung. Netzwerkanalyse macht Verwundbarkeit und Konzentration sichtbar — etwa wo ein einzelner Ausfall ganze Sektoren trifft.',tags:['Lieferketten','Einzelabhängigkeiten','Reshoring','Trade Networks']},
+  {e:'🚇',t:'Mobilität & Infrastruktur',b:'Straßen, Schienen und Flugrouten bilden Netze mit zentralen Knoten. Netzwerkanalyse zeigt, wo Systeme ausfallen können und welche Verbindungen für Robustheit entscheidend sind.',tags:['Hub-and-Spoke','Robustheit','Knotenausfälle','Redundanz']},
+  {e:'🏢',t:'Organisationen & Kommunikation',b:'Neben Organigrammen existieren Wissens- und Einflussnetze, in denen Information tatsächlich fließt. Netzwerkanalyse macht Silos, Brückenrollen und Schlüsselpersonen sichtbar — oft abseits der formalen Hierarchie.',tags:['Informelle Netze','Silos','Schlüsselpersonen','Brückenrollen']}
+];
+let openDom=null;
+function openD(i){const same=openDom===i;openDom=same?null:i;document.querySelectorAll('.dtile').forEach((t,j)=>t.classList.toggle('open',j===i&&!same));const det=document.getElementById('dDet');if(same){det.classList.remove('show');return;}const d=DOMS[i];det.innerHTML=`<h3>${d.e} ${d.t}</h3><p>${d.b}</p><div class="dtags">${d.tags.map(t=>`<span class="dtag">${t}</span>`).join('')}</div>`;det.classList.add('show');document.getElementById('domGrid').after(det);}
+
+// ── WORKSHOP ──
+const wC=document.getElementById('wsCanvas'),wX=wC.getContext('2d');
+let wNodes=[],wEdges=[],wMode='node',wESt=null,wDrag=null;
+function wRz(){wC.width=wC.offsetWidth;wC.height=400;drawWS();}
+function setWM(m){wMode=m;wESt=null;['node','edge','hub','bridge','delete'].forEach(x=>{const b=document.getElementById('wb'+x);if(b)b.classList.remove('active');});const b=document.getElementById('wb'+m);if(b)b.classList.add('active');drawWS();}
+function clearWS(){wNodes=[];wEdges=[];wESt=null;drawWS();updWS();}
+function wPos(e){const r=wC.getBoundingClientRect();const cx=e.touches?e.touches[0].clientX:e.clientX,cy=e.touches?e.touches[0].clientY:e.clientY;return{x:(cx-r.left)*(wC.width/r.width),y:(cy-r.top)*(wC.height/r.height)};}
+function hitW(x,y){for(let i=wNodes.length-1;i>=0;i--)if(Math.sqrt((x-wNodes[i].x)**2+(y-wNodes[i].y)**2)<16)return i;return-1;}
+wC.addEventListener('mousedown',wDn);wC.addEventListener('touchstart',e=>{e.preventDefault();wDn(e);},{passive:false});
+function wDn(e){const{x,y}=wPos(e),h=hitW(x,y);if(wMode==='node'){if(h<0){wNodes.push({x,y,type:'normal',l:`N${wNodes.length+1}`});drawWS();updWS();}else wDrag=h;}else if(wMode==='edge'){if(h>=0){if(wESt===null){wESt=h;}else if(wESt!==h){if(!wEdges.some(e=>(e[0]===wESt&&e[1]===h)||(e[0]===h&&e[1]===wESt)))wEdges.push([wESt,h]);wESt=null;drawWS();updWS();}}}else if(wMode==='hub'&&h>=0){wNodes[h].type=wNodes[h].type==='hub'?'normal':'hub';drawWS();}else if(wMode==='bridge'&&h>=0){wNodes[h].type=wNodes[h].type==='bridge'?'normal':'bridge';drawWS();}else if(wMode==='delete'&&h>=0){wEdges=wEdges.filter(e=>e[0]!==h&&e[1]!==h).map(e=>[e[0]>h?e[0]-1:e[0],e[1]>h?e[1]-1:e[1]]);wNodes.splice(h,1);drawWS();updWS();}}
+wC.addEventListener('mousemove',e=>{if(wDrag!==null){const{x,y}=wPos(e);wNodes[wDrag].x=x;wNodes[wDrag].y=y;drawWS();}});
+wC.addEventListener('mouseup',()=>wDrag=null);wC.addEventListener('touchend',()=>wDrag=null);
+function updWS(){const h=wNodes.filter(n=>n.type==='hub').length,b=wNodes.filter(n=>n.type==='bridge').length;document.getElementById('wsInfo').textContent=wNodes.length?`Knoten: ${wNodes.length}  ·  Kanten: ${wEdges.length}  ·  Hubs: ${h}  ·  Brücken: ${b}`:'Leitfrage: Wer sind die Knoten — und welche Beziehung zählt hier als Kante?';}
+function drawWS(){if(!wC.width)return;const W=wC.width,H=wC.height;wX.clearRect(0,0,W,H);wX.fillStyle='#0b1925';wX.fillRect(0,0,W,H);wX.strokeStyle='rgba(255,255,255,.022)';wX.lineWidth=1;for(let x=0;x<W;x+=30){wX.beginPath();wX.moveTo(x,0);wX.lineTo(x,H);wX.stroke();}for(let y=0;y<H;y+=30){wX.beginPath();wX.moveTo(0,y);wX.lineTo(W,y);wX.stroke();}wEdges.forEach(([a,b])=>{if(!wNodes[a]||!wNodes[b])return;wX.beginPath();wX.moveTo(wNodes[a].x,wNodes[a].y);wX.lineTo(wNodes[b].x,wNodes[b].y);wX.strokeStyle='rgba(15,184,204,.28)';wX.lineWidth=1.5;wX.stroke();});if(wMode==='edge'&&wESt!==null&&wNodes[wESt]){const n=wNodes[wESt];wX.beginPath();wX.arc(n.x,n.y,20,0,Math.PI*2);wX.strokeStyle='rgba(15,184,204,.38)';wX.lineWidth=1.5;wX.setLineDash([4,4]);wX.stroke();wX.setLineDash([]);}wNodes.forEach(n=>{const isH=n.type==='hub',isB=n.type==='bridge',r=isH?17:12;if(isH){const g=wX.createRadialGradient(n.x,n.y,0,n.x,n.y,r*2.2);g.addColorStop(0,'rgba(15,184,204,.17)');g.addColorStop(1,'transparent');wX.fillStyle=g;wX.beginPath();wX.arc(n.x,n.y,r*2.2,0,Math.PI*2);wX.fill();}wX.beginPath();wX.arc(n.x,n.y,r,0,Math.PI*2);wX.fillStyle=isH?'#0e3d50':isB?'#4a1f0f':'#132030';wX.fill();wX.strokeStyle=isH?'#0fb8cc':isB?'#e8732a':'rgba(15,184,204,.33)';wX.lineWidth=1.5;wX.stroke();wX.fillStyle=isH?'#0fb8cc':isB?'#e8732a':'rgba(216,232,238,.68)';wX.font='bold 10px DM Mono,monospace';wX.textAlign='center';wX.textBaseline='middle';wX.fillText(isH?'★':isB?'⌇':n.l,n.x,n.y);});if(!wNodes.length){wX.fillStyle='rgba(216,232,238,.13)';wX.font='14px Playfair Display,serif';wX.textAlign='center';wX.textBaseline='middle';wX.fillText('Klicke, um Knoten hinzuzufügen',W/2,H/2);wX.font='11px DM Mono';wX.fillStyle='rgba(216,232,238,.08)';wX.fillText('Dann Kante zeichnen und verbinden',W/2,H/2+26);}}
+wRz();window.addEventListener('resize',wRz);
+
+// ── GOOGLE SHEETS CONFIG ──
+// ► Nach dem Apps-Script-Deployment Ihre URL hier eintragen:
+const SHEETS_URL = 'IHRE_APPS_SCRIPT_URL_HIER_EINTRAGEN';
+
+// ── QUIZ ──
+const QS=[
+  // SESSION 1 — 8 Fragen
+  {s:'S1',q:'Was erkannte Euler beim Königsberger Brückenproblem?',opts:['Mit Kreativität lässt sich jede Struktur lösen','Ein Eulerweg existiert nur, wenn höchstens 2 Knoten ungeraden Grad haben','Das Problem lässt sich mit einem Zufallsansatz lösen','Die Brückenanzahl allein bestimmt die Lösbarkeit'],c:1,fb:'Euler erkannte: Die Lösbarkeit hängt nicht vom Weg ab, sondern vom Knotengrad. Das Königsberger Problem ist strukturell unlösbar, weil alle 4 Knoten ungeraden Grad haben.'},
+  {s:'S1',q:'Was misst der „Grad" eines Knotens im Netzwerk?',opts:['Wie stark Nachbarn untereinander verbunden sind','Die mittlere Distanz zu allen anderen Knoten','Die Anzahl direkter Verbindungen dieses Knotens','Den Anteil von Brückenknoten im Netzwerk'],c:2,fb:'Der Grad ist die Anzahl direkter Verbindungen — er bestimmt Sichtbarkeit und Reichweite. Brücken zu neuen Clustern sind aber oft entscheidender als reine Kontaktmasse.'},
+  {s:'S1',q:'Was ist das Paradox von Small-World-Netzwerken (Watts & Strogatz, 1998)?',opts:['Sehr niedrige Clustering-Koeffizienten trotz kurzer Pfade','Hohe lokale Verdichtung und trotzdem überraschend kurze globale Pfade','Gleichmäßige Verteilung aller Verbindungen','Keine zentralen Hubs — alle Knoten gleichwertig'],c:1,fb:'Small-World-Netzwerke verbinden hohe lokale Dichte mit erstaunlich kurzen Pfaden. Trotz Millionen Nutzern lag die Durchschnittsdistanz in Online-Netzwerken bei nur ~4,74 Schritten (Backstrom et al., 2012).'},
+  {s:'S1',q:'Was zeigt das Schelling-Segregationsmodell kontraintuitiv?',opts:['Nur extreme Präferenzen führen zu Segregation','Segregation setzt immer Diskriminierungsabsicht voraus','Schon moderate Toleranzschwellen von ~30 % können vollständige Segregation erzeugen','Mehr Vernetzung löst Segregation automatisch'],c:2,fb:'Schelling zeigte: Eine Toleranzschwelle von 30 % — nur 3 von 10 Nachbarn müssen gleich sein — genügt für vollständige Segregation. Makromuster entstehen aus Mikropräferenzen, nicht aus Extremismus.'},
+  {s:'S1',q:'Was bedeutet „Struktur schlägt Reichweite" im Marketingkontext?',opts:['Mehr Follower führen automatisch zu mehr Wirkung','Brücken zu neuen Clustern sind entscheidender als bloße Kontaktanzahl','Nur Offline-Netzwerke erzeugen nachhaltige Wirkung','Plattformgröße ist der einzige relevante Erfolgsfaktor'],c:1,fb:'Viele Kontakte sind kein automatischer Hebel. Wirkung entsteht durch anschlussfähige Knoten in relevanten Clustern und Brücken zu neuen Segmenten — nicht durch bloße Masse.'},
+  {s:'S1',q:'Welche Aussage zu Clustering und Management stimmt?',opts:['Hohes Clustering ist immer strategisch optimal','Clustering beeinflusst Entscheidungsqualität nicht','Hohes Clustering fördert Vertrauen, erhöht aber das Silo-Risiko','Clustering und Diffusion sind vollständig unabhängig'],c:2,fb:'Hohes Clustering stabilisiert Vertrauen und beschleunigt interne Koordination — riskiert aber Übersteuerung und Gruppendenken. Führung in dichten Netzwerken muss gezielte Brücken nach außen bauen.'},
+  {s:'S1',q:'Was ist die „Klammerthese" der Netzwerkökonomie?',opts:['Sie erklärt ausschließlich Plattform-Feeds und Social Media','Sie ist nur für große Tech-Konzerne strategisch relevant','Sie ist eine Denkform für alle Systeme mit Verbindungen — von Lieferketten bis Organisationsnetzen','Netzwerke lassen sich ausschließlich digital analysieren'],c:2,fb:'Netzwerkökonomie ist keine Lehre über Plattform-Feeds, sondern eine Denkform für Systeme mit Verbindungen: Lieferketten, Gesundheit, Mobilität, Organisationen — überall helfen Knoten, Wege und Verdichtung.'},
+  {s:'S1',q:'Welcher Knotentyp ist für die Verbindung getrennter Cluster strategisch entscheidend?',opts:['Der Knoten mit dem höchsten Grad im Netzwerk','Der Knoten mit dem höchsten Clustering-Koeffizienten','Der Brückenknoten — er verbindet sonst unverbundene Teilnetzwerke','Der isolierte Knoten am Rand des Netzwerks'],c:2,fb:'Brückenknoten verbinden Cluster, die sonst keinen Kontakt hätten. Sie ermöglichen den Fluss nicht-redundanter Informationen und sind oft strategisch wertvoller als reine Hubs im selben Cluster.'},
+  // SESSION 2 — 7 Fragen
+  {s:'S2',q:'Was besagt Metcalfes Gesetz zu Netzwerkeffekten?',opts:['Der Wert wächst linear mit der Nutzerzahl','Der Wert wächst proportional zum Quadrat der Nutzerzahl (n²)','Netzwerkeffekte entstehen erst ab 1 Mio. Nutzer:innen','Der Wert ist unabhängig von der Netzwerkgröße'],c:1,fb:'Metcalfes Gesetz: Der Wert eines Netzwerks wächst proportional zu n² — der Anzahl möglicher Verbindungen. Das erklärt, warum Plattformen ab einer kritischen Masse exponentiell attraktiver werden.'},
+  {s:'S2',q:'Was ist das „Kaltstart-Problem" in der Plattformökonomie?',opts:['Plattformen starten zu langsam wegen fehlender Serverkapazität','Eine neue Plattform schafft kaum Wert, weil zunächst zu wenige Nutzer:innen aktiv sind','Kaltstart beschreibt technische Ausfälle beim Launch','Der Begriff bezeichnet zu hohe Anfangsinvestitionen'],c:1,fb:'Das Kaltstart-Problem: Ein Netzwerk ohne Nutzer:innen bietet kaum Wert — aber ohne Wert kommen keine Nutzer:innen. Diese Henne-Ei-Dynamik ist die zentrale Herausforderung beim Aufbau von Plattformen.'},
+  {s:'S2',q:'Was unterscheidet direkte von indirekten Netzwerkeffekten?',opts:['Direkte Effekte sind immer stärker als indirekte','Direkte Effekte entstehen innerhalb einer Nutzergruppe; indirekte zwischen zwei verschiedenen Gruppen','Indirekte Effekte entstehen nur bei B2B-Plattformen','Beide Begriffe sind Synonyme'],c:1,fb:'Direkte Netzwerkeffekte: Mehr Nutzer:innen derselben Gruppe steigern den Wert (z. B. Telefon). Indirekte: Mehr Nutzer:innen einer Gruppe machen die Plattform für eine andere Gruppe attraktiver (z. B. mehr Käufer → mehr Verkäufer).'},
+  {s:'S2',q:'Wann kippen Netzwerkeffekte ins Negative?',opts:['Immer wenn eine Plattform profitabel wird','Wenn Wachstum Überlastung, Spam oder Qualitätsverlust erzeugt','Negative Netzwerkeffekte sind in der Literatur nicht dokumentiert','Wenn Nutzer:innen die Plattform zu häufig verwenden'],c:1,fb:'Negative Netzwerkeffekte entstehen, wenn mehr Nutzer:innen den Wert für bestehende Nutzer:innen mindern — durch Überfüllung, sinkende Qualität, Spam oder Vertrauensverlust. Skalierung ist kein Selbstzweck.'},
+  {s:'S2',q:'Was ist „Lock-in" im Kontext der Plattformökonomie?',opts:['Eine technische Sicherheitssperre in Plattformsystemen','Die Situation, in der Wechselkosten Nutzer:innen an eine Plattform binden, obwohl Alternativen existieren','Lock-in beschreibt das Einfrieren von Preisen','Der Begriff meint ausschließlich vertragliche Bindungen'],c:1,fb:'Lock-in bezeichnet den Zustand, in dem Wechselkosten — Datenverlust, fehlende Kompatibilität, Verlust sozialer Verbindungen — so hoch sind, dass Nutzer:innen verbleiben, selbst wenn Konkurrenzangebote objektiv besser sind.'},
+  {s:'S2',q:'Was ist die strategische Kernfrage von Session 2?',opts:['Wie maximiert eine Plattform kurzfristige Werbeeinnahmen?','Wann erzeugt mehr Vernetzung echten Mehrwert — und wann nur größere Zahlen?','Welche Plattform hat die meisten Nutzer:innen?','Wie reduziert eine Plattform ihre Serverkosten?'],c:1,fb:'Die Leitfrage von Session 2: Wann schlägt Wachstum in echten ökonomischen Wert um — und wann endet es in Überlastung oder Lock-in? Quantität und Qualität des Wachstums sind strikt zu unterscheiden.'},
+  {s:'S2',q:'Welche Strategie hilft Plattformen typischerweise, das Kaltstart-Problem zu überwinden?',opts:['Sofortiger globaler Launch mit maximalen Marketingausgaben','Fokus auf eine klar abgegrenzte Nutzergruppe, die sofort echten Wert erfährt','Preiserhöhung zur Positionierung als Premium-Produkt','Vollständiger Verzicht auf externe Nutzer bis zur technischen Reife'],c:1,fb:'Erfolgreiche Plattformen starten oft in einer kleinen, klar definierten Nische, in der Netzwerkeffekte schnell spürbar werden (z. B. Facebook an einer Universität, Airbnb in einer Stadt). Erst danach wird skaliert.'},
+];
+
+let qUser='', qI=0, qA=[], qFinished=false;
+
+function startQ(){
+  const n=document.getElementById('qName').value.trim();
+  if(!n){document.getElementById('qName').style.borderColor='var(--orange)';document.getElementById('qName').focus();return;}
+  qUser=n; qI=0; qA=[]; qFinished=false;
+  document.getElementById('qGate').style.display='none';
+  document.getElementById('qMain').style.display='block';
+  drawQ();
+}
+
+function drawQ(){
+  const q=QS[qI], dn=qA[qI]!==undefined;
+  document.getElementById('qfill').style.width=(qI/QS.length*100)+'%';
+  document.getElementById('qcnt').textContent=`${qI+1} / ${QS.length}`;
+  const col=q.s==='S2'?'var(--orange)':'var(--cyan)';
+  let h=`<div style="font-family:var(--mono);font-size:.57rem;letter-spacing:.14em;text-transform:uppercase;color:${col};margin-bottom:10px;display:flex;align-items:center;gap:8px">
+    <span style="display:inline-block;width:7px;height:7px;border-radius:50%;background:${col}"></span>
+    Session ${q.s==='S2'?'2 · Plattformökonomie':'1 · Netzwerkgrundlagen'}
+  </div>`;
+  h+=`<div class="q-text">${q.q}</div><div class="q-opts">`;
+  q.opts.forEach((o,i)=>{
+    let c='';
+    if(dn){if(i===q.c)c='correct';else if(i===qA[qI])c='wrong';}
+    h+=`<div class="q-opt ${c}" onclick="ansQ(${i})"><span class="q-letter">${String.fromCharCode(65+i)}</span><span>${o}</span></div>`;
+  });
+  h+=`</div><div class="q-fb ${dn?'show':''}">${q.fb}</div>`;
+  if(dn&&qI<QS.length-1) h+=`<button class="btn primary" onclick="nxtQ()" style="width:auto;padding:9px 22px">Weiter →</button>`;
+  if(dn&&qI===QS.length-1&&!qFinished) h+=`<button class="btn primary" onclick="finishQ()" style="width:auto;padding:9px 22px">Ergebnis &amp; Token →</button>`;
+  document.getElementById('qbody').innerHTML=h;
+}
+
+function ansQ(i){if(qA[qI]!==undefined)return; qA[qI]=i; drawQ();}
+function nxtQ(){if(qI<QS.length-1){qI++; drawQ();}}
+
+async function finishQ(){
+  qFinished=true;
+  const score=QS.filter((_,i)=>qA[i]===QS[i].c).length;
+  const pct=Math.round(score/QS.length*100);
+  const s1=QS.filter((q,i)=>q.s==='S1'&&qA[i]===q.c).length, t1=QS.filter(q=>q.s==='S1').length;
+  const s2=QS.filter((q,i)=>q.s==='S2'&&qA[i]===q.c).length, t2=QS.filter(q=>q.s==='S2').length;
+  const details=QS.map((_,i)=>qA[i]===QS[i].c?'✓':'✗').join(' ');
+
+  // Save to Google Sheets
+  const rec={action:'save',name:qUser,score,total:QS.length,pct,ts:new Date().toISOString(),details};
+  if(SHEETS_URL!=='IHRE_APPS_SCRIPT_URL_HIER_EINTRAGEN'){
+    try{await fetch(SHEETS_URL,{method:'POST',mode:'no-cors',headers:{'Content-Type':'application/json'},body:JSON.stringify(rec)});}catch(e){}
+  }
+  // Fallback: claude.ai storage
+  try{const k='nwoe_'+Date.now()+'_'+Math.random().toString(36).slice(2,5);await window.storage.set(k,JSON.stringify(rec),true);}catch(e){}
+
+  // Show result
+  document.getElementById('qMain').style.display='none';
+  document.getElementById('qres').style.display='block';
+  document.getElementById('qfill').style.width='100%';
+  document.getElementById('qcnt').textContent=`${QS.length} / ${QS.length}`;
+  document.getElementById('qrn').textContent=`${score}/${QS.length}`;
+  const grade=pct>=80?'Ausgezeichnet':pct>=60?'Bestanden':'Teilgenommen';
+  const msg=pct>=80?'Ausgezeichnete Leistung — Netzwerkdenken auf Profiniveau.':pct>=60?'Bestanden — beide Sessions festigen und vertiefen.':'Weitermachen — Struktur bestimmt Verhalten.';
+  document.getElementById('qrm').innerHTML=`${msg}<br><br><span style="font-family:var(--mono);font-size:.67rem;color:var(--cyan)">S1: ${s1}/${t1}</span>&emsp;<span style="font-family:var(--mono);font-size:.67rem;color:var(--orange)">S2: ${s2}/${t2}</span>`;
+  buildToken(qUser,score,QS.length,pct,grade,s1,t1,s2,t2);
+}
+
+// ── SUCCESS TOKEN ──
+let _svg='';
+function buildToken(name,score,total,pct,grade,s1,t1,s2,t2){
+  const ac=pct>=80?'#0fb8cc':pct>=60?'#3aaf72':'#527080';
+  const esc=s=>String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+  _svg=`<svg xmlns="http://www.w3.org/2000/svg" width="360" height="500" viewBox="0 0 360 500">
+  <defs>
+    <linearGradient id="tbg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#0e1a22"/><stop offset="100%" stop-color="#0b1319"/>
+    </linearGradient>
+    <radialGradient id="tgl" cx="50%" cy="28%" r="65%">
+      <stop offset="0%" stop-color="${ac}" stop-opacity=".13"/><stop offset="100%" stop-color="transparent"/>
+    </radialGradient>
+  </defs>
+  <rect width="360" height="500" rx="6" fill="url(#tbg)" stroke="${ac}" stroke-width="1.5"/>
+  <rect width="360" height="500" rx="6" fill="url(#tgl)"/>
+  <rect x="0" y="0" width="360" height="3" rx="1.5" fill="${ac}"/>
+  <!-- eyebrow -->
+  <text x="180" y="36" font-family="DM Mono,monospace" font-size="7.5" fill="${ac}" letter-spacing="2.5" text-anchor="middle" opacity=".85">NETZWERKÖKONOMIE · MEDIA UNIVERSITY</text>
+  <text x="180" y="50" font-family="DM Mono,monospace" font-size="6.5" fill="#3d5a6a" letter-spacing="1.5" text-anchor="middle">AN EXPLORABLE BY PROF. THOMAS PETZOLD PH.D.</text>
+  <!-- hex badge -->
+  <polygon points="180,68 204,81 204,107 180,120 156,107 156,81" fill="none" stroke="${ac}" stroke-width="1.5" opacity=".75"/>
+  <polygon points="180,76 198,86 198,106 180,116 162,106 162,86" fill="none" stroke="${ac}" stroke-width=".5" opacity=".25"/>
+  <text x="180" y="96" font-family="Playfair Display,serif" font-size="17" fill="${ac}" text-anchor="middle" font-style="italic">S</text>
+  <text x="180" y="113" font-family="DM Mono,monospace" font-size="8.5" fill="${ac}" text-anchor="middle">1+2</text>
+  <!-- session tag -->
+  <text x="180" y="148" font-family="DM Mono,monospace" font-size="6.5" fill="${ac}" text-anchor="middle" letter-spacing="1.8">SESSIONS 1 &amp; 2 · ABGESCHLOSSEN</text>
+  <line x1="44" y1="160" x2="316" y2="160" stroke="${ac}" stroke-width=".5" opacity=".35"/>
+  <!-- module title -->
+  <text x="180" y="190" font-family="Playfair Display,serif" font-size="19" fill="#d8e8ee" text-anchor="middle" font-style="italic">Netzwerkökonomie</text>
+  <text x="180" y="210" font-family="DM Mono,monospace" font-size="6.5" fill="#3d5a6a" text-anchor="middle" letter-spacing="1">WERT · REICHWEITE · HANDLUNGSLOGIK</text>
+  <line x1="44" y1="224" x2="316" y2="224" stroke="${ac}" stroke-width=".5" opacity=".35"/>
+  <!-- name -->
+  <text x="180" y="248" font-family="DM Mono,monospace" font-size="6.5" fill="#3d5a6a" text-anchor="middle" letter-spacing="2">ZERTIFIZIERT FÜR</text>
+  <text x="180" y="270" font-family="Playfair Display,serif" font-size="18" fill="#d8e8ee" text-anchor="middle">${esc(name)}</text>
+  <!-- score -->
+  <text x="180" y="304" font-family="DM Mono,monospace" font-size="6.5" fill="#3d5a6a" text-anchor="middle" letter-spacing="1.5">QUIZ · 15 FRAGEN</text>
+  <text x="180" y="358" font-family="Playfair Display,serif" font-size="58" fill="${ac}" text-anchor="middle" font-weight="300">${score}/${total}</text>
+  <text x="180" y="378" font-family="DM Mono,monospace" font-size="9.5" fill="${ac}" text-anchor="middle" letter-spacing=".5">${grade.toUpperCase()} · ${pct}%</text>
+  <!-- session split -->
+  <rect x="44" y="392" width="122" height="34" rx="3" fill="rgba(15,184,204,.07)" stroke="rgba(15,184,204,.25)" stroke-width="1"/>
+  <text x="105" y="406" font-family="DM Mono,monospace" font-size="6" fill="#0fb8cc" text-anchor="middle" letter-spacing="1">SESSION 1</text>
+  <text x="105" y="420" font-family="Playfair Display,serif" font-size="13" fill="#0fb8cc" text-anchor="middle">${s1}/${t1}</text>
+  <rect x="194" y="392" width="122" height="34" rx="3" fill="rgba(232,115,42,.07)" stroke="rgba(232,115,42,.25)" stroke-width="1"/>
+  <text x="255" y="406" font-family="DM Mono,monospace" font-size="6" fill="#e8732a" text-anchor="middle" letter-spacing="1">SESSION 2</text>
+  <text x="255" y="420" font-family="Playfair Display,serif" font-size="13" fill="#e8732a" text-anchor="middle">${s2}/${t2}</text>
+  <line x1="44" y1="438" x2="316" y2="438" stroke="${ac}" stroke-width=".5" opacity=".3"/>
+  <text x="180" y="456" font-family="DM Mono,monospace" font-size="6.5" fill="#2a3f50" text-anchor="middle" letter-spacing="1">MEDIA UNIVERSITY OF APPLIED SCIENCES · 2026</text>
+  <text x="180" y="470" font-family="DM Mono,monospace" font-size="6" fill="#1e3040" text-anchor="middle">Designed by Prof. T. Petzold Ph.D. &amp; Claude</text>
+  <text x="24" y="490" font-family="monospace" font-size="12" fill="${ac}" opacity=".25">◆</text>
+  <text x="336" y="490" font-family="monospace" font-size="12" fill="${ac}" opacity=".25" text-anchor="end">◆</text>
+</svg>`;
+  document.getElementById('tokenWrap').innerHTML=_svg;
+}
+
+function downloadToken(){
+  if(!_svg)return;
+  const blob=new Blob([_svg],{type:'image/svg+xml'});
+  const a=document.createElement('a');
+  a.href=URL.createObjectURL(blob);
+  a.download='Netzwerkoekonomie_Token_'+qUser.replace(/\s+/g,'_')+'.svg';
+  a.click();
+}
+
+function restartQ(){
+  qI=0; qA=[]; qFinished=false; qUser=''; _svg='';
+  document.getElementById('qGate').style.display='block';
+  document.getElementById('qMain').style.display='none';
+  document.getElementById('qres').style.display='none';
+  document.getElementById('qName').value='';
+  document.getElementById('qName').style.borderColor='';
+  document.getElementById('tokenWrap').innerHTML='';
+}
+</script>
+</body>
+</html>
